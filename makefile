@@ -3,8 +3,7 @@ test: ## run pytest
 
 clean: ## clean
 	rm -r _tests	
-
-
+	rm -r drl/tests/_tests
 
 train: ## train 
 	./train.sh &

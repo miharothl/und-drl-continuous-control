@@ -7,10 +7,10 @@ from drl.environments.environment import Environment
 
 class GymStandardEnv(Environment):
 
-    def __init__(self, name, termination_reward):
+    def __init__(self, name):
         self.__env = gym.make(name)
         self.__env.seed(0)
-        self.__termination_reward = termination_reward
+        self.__termination_reward = 0
 
     def step(self, action):
         next_state, reward, done, info = self.__env.step(action)

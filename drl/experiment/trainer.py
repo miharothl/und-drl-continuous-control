@@ -7,13 +7,13 @@ from collections import deque
 import sys
 import logging
 
-from drl.experiment.config import Config
+from drl.experiment.config2 import Config2
+from drl.experiment.configs.trainer_cfg import TrainerConfig
 from drl.experiment.recorder import Recorder
 
 
 class Trainer:
-    def __init__(self, model_id, config: Config, session_id, path_models='models'):
-        self.__model_id = model_id
+    def __init__(self, config: Config2, session_id, path_models='models'):
         self.__config = config
         self.__session_id = session_id
 
@@ -23,7 +23,7 @@ class Trainer:
         Path(session_path).mkdir(parents=True, exist_ok=True)
 
         import re
-        model_id = re.sub('[^0-9a-zA-Z]+', '', self.__config.get_current_env())
+        model_id = re.sub('[^0-9a-zA-Z]+', '', self.__config.get_current_exp_cfg().id)
         model_id = model_id.lower()
         filename = "{}_{}_{}_{:.2f}_{:.2f}_{:.2f}.pth".format(model_id, self.__session_id, episode, score, val_score, eps)
 
@@ -31,40 +31,18 @@ class Trainer:
 
         return model_path
 
-    def train(self, agent, env, is_rgb,
-              model_filename=None,
-              max_steps=10000,
-              max_episode_steps=18000,
-              eval_frequency=10000,
-              eval_steps=10000,
-              eps_decay=0.99,
-              is_human_flag=False):
-        if is_rgb:
-            return self.dqn_rgb(agent, env, model_filename, n_episodes=max_steps, eval_steps=eval_steps)
-        else:
-            return self.dqn_classic(agent, env, model_filename,
-                                    max_steps=max_steps,
-                                    max_episode_steps=max_episode_steps,
-                                    eval_frequency=eval_frequency,
-                                    eval_steps=eval_steps,
-                                    eps_decay=eps_decay,
-                                    is_human_flag=is_human_flag
-                                    )
+    def train(self, agent, env, model_filename=None):
+        # if is_rgb:
+        #     return self.dqn_rgb(agent, env, model_filename, n_episodes=max_steps, eval_steps=eval_steps)
+        # else:
+        return self.dqn_classic(agent, env, model_filename)
 
     def select_model_filename(self, model_filename=None):
         if model_filename is not None:
             path = os.path.join(self.__path_models, model_filename)
             return path
 
-    def dqn_classic(self, agent, env, model_filename=None,
-                    max_steps=300000000,
-                    max_episode_steps=18000,
-                    eval_frequency=2000,
-                    eval_steps=10000,
-                    is_human_flag=False,
-                    eps_start=1.0,
-                    eps_end=0.01,
-                    eps_decay=0.9990, terminate_soore=800.0):
+    def dqn_classic(self, agent, env, model_filename=None):
         """Deep Q-Learning.
 
         Params
@@ -75,6 +53,21 @@ class Trainer:
             eps_end (float): minimum value of epsilon
             eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
         """
+
+        trainer_cfg: TrainerConfig = self.__config.get_current_exp_cfg().trainer_cfg
+
+        max_steps = trainer_cfg.max_steps
+        max_episode_steps = trainer_cfg.max_episode_steps
+
+        eval_frequency = trainer_cfg.eval_frequency
+        eval_steps = trainer_cfg.eval_steps
+
+        is_human_flag = trainer_cfg.human_flag
+
+        eps_start = trainer_cfg.epsilon_max
+        eps_end = trainer_cfg.epsilon_min
+        eps_decay = trainer_cfg.epsilon_decay
+
         scores_window = deque(maxlen=100)  # last 100 scores
         eps = eps_start  # initialize epsilon
 
@@ -95,7 +88,7 @@ class Trainer:
             experiments_path=self.__config.get_app_experiments_path(train_mode=True),
             model=None,
             log_prefix='epoch-',
-            configuration = self.__config.get_current_env_config()
+            configuration = self.__config.get_current_exp_cfg()
         )
 
         episode_recorder = Recorder(
@@ -105,7 +98,7 @@ class Trainer:
             experiments_path=self.__config.get_app_experiments_path(train_mode=True),
             model=None,
             log_prefix='episode-',
-            configuration=self.__config.get_current_env_config()
+            configuration=self.__config.get_current_exp_cfg()
         )
 
         EVAL_FREQUENCY = eval_frequency
@@ -148,11 +141,11 @@ class Trainer:
 
                     action = agent.act(state, eps)
 
-                    if self.__config.get_agent_start_game_action_required():
-                        if new_life:
-                            action = self.__config.get_agent_start_game_action()
-
-                    action = action + self.__config.get_agent_state_offset()
+                    # if self.__config.get_agent_start_game_action_required():
+                    #     if new_life:
+                    #         action = self.__config.get_agent_start_game_action()
+                    #
+                    # action = action + self.__config.get_agent_state_offset()
 
                     if is_human_flag:
                         env.render(mode='human')
@@ -161,11 +154,10 @@ class Trainer:
 
                     next_state = agent.pre_process(next_state)
 
-                    action = action - self.__config.get_agent_state_offset()
+                    # action = action - self.__config.get_agent_state_offset()
 
-                    if done:
-                        reward += self.__config.get_env_terminate_reward()
-
+                    # if done:
+                    #     reward += self.__config.get_env_terminate_reward()
 
                     pos_reward_ratio, neg_reward_ratio, loss, beta = agent.step(state, action, reward, next_state, done)
 
@@ -245,11 +237,11 @@ class Trainer:
 
                     action = agent.act(state, eps)
 
-                    if self.__config.get_agent_start_game_action_required():
-                        if new_life:
-                            action = self.__config.get_agent_start_game_action()
-
-                    action = action + self.__config.get_agent_state_offset()
+                    # if self.__config.get_agent_start_game_action_required():
+                    #     if new_life:
+                    #         action = self.__config.get_agent_start_game_action()
+                    #
+                    # action = action + self.__config.get_agent_state_offset()
 
                     if is_human_flag:
                         env.render(mode='human')
@@ -258,8 +250,8 @@ class Trainer:
 
                     next_state = agent.pre_process(next_state)
 
-                    if done:
-                        reward += self.__config.get_env_terminate_reward()
+                    # if done:
+                    #     reward += self.__config.get_env_terminate_reward()
 
                     val_step += 1
 

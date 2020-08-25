@@ -10,7 +10,7 @@ class GymAtariEnv(Environment):
     def __init__(self, name, termination_reward=0, lost_life_reward=-1):
         self.__env = gym.make(name)
         self.__env.seed(0)
-        self.__termination_reward = termination_reward
+        self.__termination_reward = 0
         self.__lost_life_reward = lost_life_reward
 
         self.__lives = -1

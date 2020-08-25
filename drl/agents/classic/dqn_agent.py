@@ -6,7 +6,7 @@ from collections import deque
 
 from drl.agents.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
 from drl.agents.schedules import LinearSchedule
-from drl.experiment.config import Config
+from drl.experiment.config2 import Config2
 from drl.models.model_factory import ModelFactory
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -15,7 +15,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class DqnAgent:
     """Interacts with and learns from the environment."""
 
-    def __init__(self, seed, cfg: Config):
+    def __init__(self, seed, cfg: Config2):
         """Initialize an Agent object.
 
         Params
@@ -23,32 +23,46 @@ class DqnAgent:
             seed (int): random seed
             cfg (Config): configration
         """
-
         # training parameters
-        self.batch_size = 64  # minibatch size
-        self.update_every = 4  # how often to update the network
-        self.learning_rate = cfg.get_train_learning_rate()  # learning rate
-        self.tau = cfg.get_train_tau()  # for soft update of target parameters
-        self.gamma = cfg.get_current_env_train_gamma()  # discount factor
+        trainer_cfg = cfg.get_current_exp_cfg().trainer_cfg
+        self.batch_size = trainer_cfg.batch_size        # minibatch size
+        self.update_every = trainer_cfg.update_every    # how often to update the network
+        self.learning_rate = trainer_cfg.learning_rate  # learning rate
+        self.tau = trainer_cfg.tau                      # for soft update of target parameters
+        self.gamma = trainer_cfg.gamma                  # discount factor
+        self.total_timesteps =  trainer_cfg.max_steps
 
         # agent parameters
-        self.state_size = cfg.get_agent_state_size()
-        self.action_size = cfg.get_agent_action_size()
+        agent_cfg = cfg.get_current_exp_cfg().agent_cfg
+        self.state_size = agent_cfg.state_size
+        self.action_size = agent_cfg.action_size
+        self.__num_frames = agent_cfg.num_frames
 
         # replay memory parameters
-        self.buffer_size = cfg.get_replay_memory_buffer_size()
-        self.prioritized_replay = cfg.get_replay_memory_prioritized_replay_flag()
-        self.prioritized_replay_alpha = cfg.get_replay_memory_prioritized_replay_alpha()
-        self.prioritized_replay_beta0 = cfg.get_replay_memory_prioritized_replay_beta0()
-        self.prioritized_replay_eps = cfg.get_replay_memory_prioritized_replay_eps()
-        self.total_timesteps = cfg.get_train_max_steps()
+        replay_memory_cfg = cfg.get_current_exp_cfg().replay_memory_cfg
+        self.buffer_size = replay_memory_cfg.buffer_size
+        self.prioritized_replay = replay_memory_cfg.prioritized_replay
+        self.prioritized_replay_alpha = replay_memory_cfg.prioritized_replay_alpha
+        self.prioritized_replay_beta0 = replay_memory_cfg.prioritized_replay_beta0
+        self.prioritized_replay_eps = replay_memory_cfg.prioritized_replay_eps
         self.prioritized_replay_beta_iters = None
 
         # network parameters
-        nn_cfg = cfg.get_neural_network_hiden_layers()
-        dueling = cfg.get_neural_network_dueling_flag()
-        self.double_dqn = cfg.get_neural_network_double_flag()
-        self.__num_frames = cfg.get_agent_num_frames()
+        neural_network_cfg = cfg.get_current_exp_cfg().neural_network_cfg
+        nn_cfg = neural_network_cfg.hidden_layers
+
+        # reinforcement learning parameters
+        reinforcement_learning_cfg = cfg.get_current_exp_cfg().reinforcement_learning_cfg
+        alg_type = reinforcement_learning_cfg.algorithm_type
+
+        dueling = False
+        self.double_dqn = False
+
+        if alg_type == 'dqn_dueling':
+            dueling = True
+
+        if alg_type == 'dqn_double':
+            self.double_dqn = True
 
         # Q-Network
         self.current_model, self.target_model = ModelFactory.create(

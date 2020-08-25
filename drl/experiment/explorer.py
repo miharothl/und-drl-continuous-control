@@ -1,12 +1,12 @@
 import glob
 import os
 
-from drl.experiment.config import Config
+from drl.experiment.config2 import Config2
 
 
 class Explorer:
 
-    def __init__(self, config: Config):
+    def __init__(self, config: Config2):
         self.__config = config
         pass
 

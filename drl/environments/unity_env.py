@@ -11,7 +11,7 @@ class UnityEnv(Environment):
     def __init__(self, name, termination_reward):
         self.__env = UnityEnvironment(file_name=name)
         self.__brain_name = self.__env.brain_names[0]
-        self.__termination_reward = termination_reward
+        self.__termination_reward = 0
 
         # env = UnityEnvironment(file_name="Banana_Linux_NoVis/Banana.x86_64")
 

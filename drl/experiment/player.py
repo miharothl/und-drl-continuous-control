@@ -2,16 +2,15 @@ import torch
 import matplotlib.pyplot as plt
 
 from drl.environments.environment import Environment
-from drl.experiment.config import Config
+from drl.experiment.config2 import Config2
 from drl.experiment.recorder import Recorder
 from drl.image import imshow
 
 
 class Player:
-    def __init__(self, env: Environment, agent, model_id, config: Config, session_id, path_models='models'):
+    def __init__(self, env: Environment, agent, config: Config2, session_id, path_models='models'):
         self.__env = env
         self.__agent = agent
-        self.__model_id = model_id
         self.__config = config
         self.__session_id = session_id
         self.__path_models = path_models
@@ -37,7 +36,8 @@ class Player:
         recorder = Recorder(header=['episode', 'step', 'action', 'reward', 'reward_total'],
                             session_id=self.__session_id,
                             experiments_path=self.__config.get_app_experiments_path(train_mode=False),
-                            model=None)
+                            model=None,
+                            configuration=self.__config.get_current_exp_cfg())
 
         if trained or (model_filename is not None):
             self.__agent.current_model.load_state_dict(torch.load(model_filename, map_location=lambda storage, loc: storage))
@@ -49,9 +49,9 @@ class Player:
             state, new_life = self.__env.reset()
             self.__env.render(mode=mode)
 
-            if self.__config.get_env_is_atari_flag():
-                lives = -1
-                new_life = False
+            # if self.__config.get_env_is_atari_flag():
+            #     lives = -1
+            #     new_life = False
 
             if num_steps is None:
                 while True:
