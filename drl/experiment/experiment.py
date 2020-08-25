@@ -11,12 +11,12 @@ from drl.agents.rgb.dqn_agent_rgb import DqnAgentRgb
 from drl.environments.gym_atari_env import GymAtariEnv
 from drl.environments.gym_standard_env import GymStandardEnv
 from drl.environments.unity_env import UnityEnv
-from drl.experiment.config2 import Config2
+from drl.experiment.config import Config
 from drl.experiment.player import Player
 from drl.experiment.trainer import Trainer
 
 class Experiment:
-    def __init__(self, config: Config2):
+    def __init__(self, config: Config):
         self.__config = config
         self.__timestamp = datetime.now().strftime("%Y%m%dT%H%M")
 

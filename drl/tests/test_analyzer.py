@@ -1,5 +1,5 @@
 from drl.experiment.analyser import Analyzer
-from drl.experiment.config2 import Config2
+from drl.experiment.config import Config
 from drl.experiment.experiment import Experiment
 from drl.experiment.explorer import Explorer
 
@@ -25,7 +25,7 @@ class TestAnalyser:
     #         assert(len(analysis.keys()) > 0)
 
     def test_listTrainExperiments_selectExperiments_compareEpochData(self):
-        config = Config2(test_flag=True)
+        config = Config(test_flag=True)
         explorer = Explorer(config=config)
         experiment = Experiment(config)
         analyzer = Analyzer(config=config, session_id=experiment.get_session_id())
@@ -37,7 +37,7 @@ class TestAnalyser:
         assert file is not None
 
     def test_listTrainExperiments_selectExperiment_printsConfig(self):
-        config = Config2(test_flag=True)
+        config = Config(test_flag=True)
         explorer = Explorer(config=config)
         experiment = Experiment(config)
         analyzer = Analyzer(config=config, session_id=experiment.get_session_id())
@@ -47,7 +47,7 @@ class TestAnalyser:
         analyzer.compare_train_config(experiments)
 
     def test_listTrainExperiments_selectExperiment_compareEpochScore(self):
-        config = Config2(test_flag=True)
+        config = Config(test_flag=True)
         explorer = Explorer(config=config)
         experiment = Experiment(config)
         analyzer = Analyzer(config=config, session_id=experiment.get_session_id())

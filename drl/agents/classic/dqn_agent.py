@@ -6,7 +6,7 @@ from collections import deque
 
 from drl.agents.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
 from drl.agents.schedules import LinearSchedule
-from drl.experiment.config2 import Config2
+from drl.experiment.config import Config
 from drl.models.model_factory import ModelFactory
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -15,7 +15,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class DqnAgent:
     """Interacts with and learns from the environment."""
 
-    def __init__(self, seed, cfg: Config2):
+    def __init__(self, seed, cfg: Config):
         """Initialize an Agent object.
 
         Params

@@ -5,7 +5,7 @@ from drl.experiment.configs.experiment_cfg import ExperimentConfig
 from drl.experiment.configs.master_config import MasterConfig
 
 
-class Config2:
+class Config:
     def __init__(self, current_exp='lunarlander', test_flag=False, exp_cfg=None):
         self.__app = self.__set_app_config()
         self.__exp_cfg = self.__set_exp_config(exp_cfg)

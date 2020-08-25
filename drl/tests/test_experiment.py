@@ -1,6 +1,6 @@
 import pytest
 
-from drl.experiment.config2 import Config2
+from drl.experiment.config import Config
 from drl.experiment.experiment import Experiment
 
 
@@ -162,4 +162,4 @@ class TestExperiment:
                 ]
             }
 
-        return Config2(test_flag=True, exp_cfg=cfg)
+        return Config(test_flag=True, exp_cfg=cfg)
