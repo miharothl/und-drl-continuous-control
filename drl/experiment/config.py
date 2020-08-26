@@ -150,7 +150,7 @@ class Config:
                         "eval_frequency": 20000,
                         "eval_steps": 3000,
                         "gamma": 0.99,
-                        "human_flag": True,
+                        "human_flag": False,
                         "learning_rate": 0.0001,
                         "max_episode_steps": 1000,
                         "max_steps": 1000000,
