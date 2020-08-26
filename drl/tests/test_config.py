@@ -2,13 +2,13 @@ import json
 
 import pytest
 
-from drl.experiment.configs.environment_cfg import EnvironmentConfig
-from drl.experiment.configs.experiment_cfg import ExperimentConfig, AgentConfig
-from drl.experiment.configs.master_config import MasterConfig
-from drl.experiment.configs.neural_network_cfg import NeuralNetworkConfig
-from drl.experiment.configs.reinforcement_learning_cfg import ReinforcementLearningConfig
-from drl.experiment.configs.replay_memory_cfg import ReplayMemoryConfig
-from drl.experiment.configs.trainer_cfg import TrainerConfig
+from drl.experiment.configuration.environment_config import EnvironmentConfig
+from drl.experiment.configuration.experiment_config import ExperimentConfig, AgentConfig
+from drl.experiment.configuration.master_config import MasterConfig
+from drl.experiment.configuration.neural_network_config import NeuralNetworkConfig
+from drl.experiment.configuration.reinforcement_learning_config import ReinforcementLearningConfig
+from drl.experiment.configuration.replay_memory_config import ReplayMemoryConfig
+from drl.experiment.configuration.trainer_config import TrainerConfig
 
 
 class TestConfig:

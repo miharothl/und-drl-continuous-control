@@ -3,31 +3,33 @@ from gym.spaces import Discrete
 from unityagents import UnityEnvironment
 
 from drl import logging
-from drl.environments.environment import Environment
+from drl.environments.i_environment import IEnvironment
 
 
-class UnityEnv(Environment):
+class UnityEnv(IEnvironment):
 
     def __init__(self, name, termination_reward):
         self.__env = UnityEnvironment(file_name=name)
         self.__brain_name = self.__env.brain_names[0]
         self.__termination_reward = 0
-
         # env = UnityEnvironment(file_name="Banana_Linux_NoVis/Banana.x86_64")
 
-    def step(self, action):
-        env_info = self.__env.step(action)[self.__brain_name]  # send the action to the environment
+    def action_offset(self):
+        return 0
 
-        next_state = env_info.vector_observations[0]  # get the next state
-        reward = env_info.rewards[0]  # get the reward
-        done = env_info.local_done[0]  # see if episode has finished
+    def close(self):
+        self.__env.close()
 
-        if done:
-            reward += self.__termination_reward
-
-        new_life = False
-
-        return next_state, reward, done, new_life
+    def get_action_space(self):
+        # isDiscrete = isinstance(self.__env.action_space, Discrete)
+        #
+        # if isDiscrete:
+        #     num_action_space = self.__env.action_space.n
+        #     logging.debug("Env action space is discrete")
+        #     logging.debug("Env action space: {}".format(num_action_space))
+        #
+        # logging.debug("Env observation space: {}".format(self.__env.observation_space))
+        pass
 
     def render(self, mode):
         pass
@@ -43,17 +45,19 @@ class UnityEnv(Environment):
 
         return state, new_life
 
-    def get_action_space(self):
+    def start_game_action(self):
+        return None
 
-        # isDiscrete = isinstance(self.__env.action_space, Discrete)
-        #
-        # if isDiscrete:
-        #     num_action_space = self.__env.action_space.n
-        #     logging.debug("Env action space is discrete")
-        #     logging.debug("Env action space: {}".format(num_action_space))
-        #
-        # logging.debug("Env observation space: {}".format(self.__env.observation_space))
-        pass
+    def step(self, action):
+        env_info = self.__env.step(action)[self.__brain_name]  # send the action to the environment
 
-    def close(self):
-        self.__env.close()
+        next_state = env_info.vector_observations[0]  # get the next state
+        reward = env_info.rewards[0]  # get the reward
+        done = env_info.local_done[0]  # see if episode has finished
+
+        if done:
+            reward += self.__termination_reward
+
+        new_life = False
+
+        return next_state, reward, done, new_life

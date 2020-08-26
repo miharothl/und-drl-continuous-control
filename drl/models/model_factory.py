@@ -2,6 +2,7 @@ import torch
 from typing import Tuple
 
 from drl.models.classic.model import DqnDueling2Hidden, Dqn2Hidden, Dqn3Hidden, Dqn4Hidden
+from drl.models.rgb.model_rgb import QNetwork2a
 
 
 class ModelFactory:
@@ -70,5 +71,11 @@ class ModelFactory:
                     fc2_units=fc_units[1],
                     fc3_units=fc_units[2],
                     fc4_units=fc_units[3]).to(device)
+
+            return current_model, target_model
+
+        if type == 'rgb':
+            current_model = QNetwork2a(state_size[0], state_size[1], num_frames, action_size, seed).to(device)
+            target_model = QNetwork2a(state_size[0], state_size[1], num_frames, action_size, seed).to(device)
 
             return current_model, target_model

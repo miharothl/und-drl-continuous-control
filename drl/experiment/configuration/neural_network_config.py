@@ -1,6 +1,6 @@
 from typing import List
 
-from drl.experiment.configs.config_base import ConfigBase
+from drl.experiment.configuration.config_base import ConfigBase
 
 
 class NeuralNetworkConfig(ConfigBase):

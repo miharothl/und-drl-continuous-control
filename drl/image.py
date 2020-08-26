@@ -15,8 +15,9 @@ def imshow(image, ax=None, title=None, normalize=True):
     #     image = std * image + mean
     #     image = np.clip(image, 0, 1)
 
-    image = cv2.resize(image, (84, 84))
+    image = image[32:193, 8:152]
 
+    image = cv2.resize(image, (84, 84))
     # image = image.transpose(2, 1, 0)
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
@@ -30,3 +31,10 @@ def imshow(image, ax=None, title=None, normalize=True):
     # ax.set_yticklabels('')
 
     return image
+
+
+def plot_image(image):
+    import matplotlib.pyplot as plt
+
+    plt.imshow(image)
+    plt.show()

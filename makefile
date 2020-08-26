@@ -3,6 +3,8 @@ test: ## run pytest
 
 clean: ## clean
 	rm -r _tests	
+
+clean_ide: ## clean
 	rm -r drl/tests/_tests
 
 train: ## train 

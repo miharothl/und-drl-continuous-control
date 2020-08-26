@@ -37,6 +37,7 @@ class DqnAgent:
         self.state_size = agent_cfg.state_size
         self.action_size = agent_cfg.action_size
         self.__num_frames = agent_cfg.num_frames
+        self.state_rgb = agent_cfg.state_rgb
 
         # replay memory parameters
         replay_memory_cfg = cfg.get_current_exp_cfg().replay_memory_cfg
@@ -64,9 +65,15 @@ class DqnAgent:
         if alg_type == 'dqn_double':
             self.double_dqn = True
 
+
+        if agent_cfg.state_rgb is True:
+            network_type = 'rgb'
+        else:
+            network_type = 'classic'
+
         # Q-Network
         self.current_model, self.target_model = ModelFactory.create(
-            type='classic',
+            type=network_type,
             fc_units=nn_cfg,
             num_frames= self.__num_frames,
             state_size= self.state_size,
@@ -95,13 +102,27 @@ class DqnAgent:
         self.__frames_queue = deque(maxlen=self.__num_frames)
 
     def pre_process(self, raw_state):
+
+        ################################################################
+        # try this
+        if self.state_rgb is True:
+            from drl.image import imshow
+            raw_state = imshow(raw_state)
+        ################################################################
+
         if len(self.__frames_queue) == 0:
             for i in range(self.__num_frames):
                 self.__frames_queue.append(raw_state)
 
         self.__frames_queue.append(raw_state)
 
-        state = np.concatenate(self.__frames_queue)
+        ################################################################
+        # try this
+        if self.state_rgb is True:
+            state = np.stack(self.__frames_queue)
+        else:
+            state = np.concatenate(self.__frames_queue)
+        ################################################################
 
         return state
 
@@ -169,8 +190,6 @@ class DqnAgent:
             state (array_like): current state
             eps (float): epsilon, for epsilon-greedy action selection
         """
-        # state = self.pre_process(state)
-
         state = torch.from_numpy(state).float().unsqueeze(0).to(device)
         self.current_model.eval()
         with torch.no_grad():

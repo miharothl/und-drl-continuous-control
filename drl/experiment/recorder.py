@@ -4,7 +4,7 @@ import pandas as pd
 from typing import List, Tuple, Dict
 from pathlib import Path
 
-from drl.experiment.configs.experiment_cfg import ExperimentConfig
+from drl.experiment.configuration.experiment_config import ExperimentConfig
 
 
 class Recorder:

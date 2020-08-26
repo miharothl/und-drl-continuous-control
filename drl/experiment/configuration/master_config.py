@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from drl.experiment.configs.experiment_cfg import ExperimentConfig
+from drl.experiment.configuration.experiment_config import ExperimentConfig
 
 
 class MasterConfig(object):
