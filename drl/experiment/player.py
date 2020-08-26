@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from drl.environments.i_environment import IEnvironment
 from drl.experiment.config import Config
 from drl.experiment.recorder import Recorder
-from drl.image import imshow
+from drl.image import preprocess_image
 
 
 class Player:
@@ -123,7 +123,7 @@ class Player:
             state, new_life = self.__env.reset()
             image = self.__env.render(mode=mode)
 
-            image2 = imshow(state)
+            image2 = preprocess_image(state)
 
             if num_steps is None:
                 while True:

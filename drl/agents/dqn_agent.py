@@ -106,8 +106,8 @@ class DqnAgent:
         ################################################################
         # try this
         if self.state_rgb is True:
-            from drl.image import imshow
-            raw_state = imshow(raw_state)
+            from drl.image import preprocess_image
+            raw_state = preprocess_image(raw_state)
         ################################################################
 
         if len(self.__frames_queue) == 0:
