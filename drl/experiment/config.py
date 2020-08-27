@@ -205,7 +205,7 @@ class Config:
                 },
                 {
                     'id': 'banana',
-                    'gym_id': 'env/unity/mac/banana',
+                    'gym_id': 'env/unity/mac/banana.app',
                     "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
