@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import torch
+from torch import Tensor
 import torch.optim as optim
 from collections import deque
 
@@ -9,7 +10,8 @@ from drl.agents.schedules import LinearSchedule
 from drl.experiment.config import Config
 from drl.models.model_factory import ModelFactory
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = "cuda"
 
 
 class DqnAgent:
@@ -212,12 +214,12 @@ class DqnAgent:
         """
         states, actions, rewards, next_states, dones, weights = experiences
 
-        states = torch.from_numpy(states).float()
-        actions = torch.from_numpy(actions).long().unsqueeze(1)
-        rewards = torch.from_numpy(rewards).float().unsqueeze(1)
-        next_states = torch.from_numpy(next_states).float()
-        dones = torch.from_numpy(dones.astype(np.uint8)).float().unsqueeze(1)
-        weights = torch.from_numpy(weights).float().unsqueeze(1)
+        states = torch.from_numpy(states).float().to(device)
+        actions = torch.from_numpy(actions).long().unsqueeze(1).to(device)
+        rewards = torch.from_numpy(rewards).float().unsqueeze(1).to(device)
+        next_states = torch.from_numpy(next_states).float().to(device)
+        dones = torch.from_numpy(dones.astype(np.uint8)).float().unsqueeze(1).to(device)
+        weights = torch.from_numpy(weights).float().unsqueeze(1).to(device)
 
         if self.double_dqn:
             q_values = self.current_model(states)
@@ -243,7 +245,8 @@ class DqnAgent:
 
         td_error = loss
         td_error = td_error.squeeze(1)
-        td_error = td_error.detach().numpy()
+        td_error = Tensor.cpu(td_error.detach())
+        td_error = td_error.numpy()
 
         loss = loss.mean()
 
