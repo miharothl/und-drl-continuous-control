@@ -10,8 +10,7 @@ from drl.agents.schedules import LinearSchedule
 from drl.experiment.config import Config
 from drl.models.model_factory import ModelFactory
 
-#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-device = "cuda"
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 class DqnAgent:
