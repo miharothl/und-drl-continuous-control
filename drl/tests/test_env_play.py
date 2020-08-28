@@ -1,15 +1,15 @@
 import pytest
 
-from drl.experiment.config import Config
+from drl.experiment.configuration import Configuration
 from drl.experiment.experiment import Experiment
-from drl.tests.test_experiment_config import TestExperimentConfig
+from drl.tests.test_env_config import TestEnvConfig
 
 
-class TestExperimentPlay:
+class TestEnvPlay:
 
     def test_listEnvs_configExist_returnsEnvs(self):
 
-        config = TestExperimentConfig.get()
+        config = TestEnvConfig.get()
         experiment = Experiment(config)
 
         envs = experiment.list_envs()
@@ -18,7 +18,7 @@ class TestExperimentPlay:
 
     @pytest.mark.depends(name='test_play')
     def test_playDummy_configExist_playsWithDummyAgent(self):
-        config = TestExperimentConfig.get()
+        config = TestEnvConfig.get()
         experiment = Experiment(config)
 
         envs = experiment.list_envs()

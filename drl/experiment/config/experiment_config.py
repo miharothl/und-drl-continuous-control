@@ -1,12 +1,12 @@
 from typing import List, Dict
 import json
 
-from drl.experiment.configuration.agent_config import AgentConfig
-from drl.experiment.configuration.environment_config import EnvironmentConfig
-from drl.experiment.configuration.neural_network_config import NeuralNetworkConfig
-from drl.experiment.configuration.reinforcement_learning_config import ReinforcementLearningConfig
-from drl.experiment.configuration.replay_memory_config import ReplayMemoryConfig
-from drl.experiment.configuration.trainer_config import TrainerConfig
+from drl.experiment.config.agent_config import AgentConfig
+from drl.experiment.config.environment_config import EnvironmentConfig
+from drl.experiment.config.neural_network_config import NeuralNetworkConfig
+from drl.experiment.config.reinforcement_learning_config import ReinforcementLearningConfig
+from drl.experiment.config.replay_memory_config import ReplayMemoryConfig
+from drl.experiment.config.trainer_config import TrainerConfig
 
 
 class ExperimentConfig(object):

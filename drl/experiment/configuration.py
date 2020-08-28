@@ -1,11 +1,11 @@
 import os
 from typing import List
 
-from drl.experiment.configuration.experiment_config import ExperimentConfig
-from drl.experiment.configuration.master_config import MasterConfig
+from drl.experiment.config.experiment_config import ExperimentConfig
+from drl.experiment.config.master_config import MasterConfig
 
 
-class Config:
+class Configuration:
     def __init__(self, current_exp='lunarlander', test_flag=False, exp_cfg=None):
         self.__app = self.__set_app_config()
         self.__exp_cfg = self.__set_exp_config(exp_cfg)

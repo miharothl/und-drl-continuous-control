@@ -1,6 +1,6 @@
 import pytest
 
-from drl.experiment.config import Config
+from drl.experiment.configuration import Configuration
 from drl.experiment.explorer import Explorer
 
 
@@ -9,7 +9,7 @@ class TestExplorer:
     @pytest.mark.depends(on=['test_play'])
     def test_listPlayExperiments_experimentsExist_returnsExperiments(self):
 
-        config = Config(test_flag=True)
+        config = Configuration(test_flag=True)
         explorer = Explorer(config = config)
 
         experiments = explorer.list_play_experiments()
@@ -18,7 +18,7 @@ class TestExplorer:
     @pytest.mark.depends(on=['test_train'])
     def test_listTrainExperiments_experimentsExist_returnsExperiments(self):
 
-        config = Config(test_flag=True)
+        config = Configuration(test_flag=True)
         explorer = Explorer(config = config)
 
         experiments = explorer.list_train_experiments()

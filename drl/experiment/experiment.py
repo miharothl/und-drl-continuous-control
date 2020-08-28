@@ -1,14 +1,14 @@
 from datetime import datetime
 
-from drl.agents.agent_factory import AgentFactory
-from drl.environments.environment_factory import EnvironmentFactory
-from drl.experiment.config import Config
+from drl.agent.agent_factory import AgentFactory
+from drl.env.environment_factory import EnvironmentFactory
+from drl.experiment.configuration import Configuration
 from drl.experiment.player import Player
 from drl.experiment.trainer import Trainer
 
 
 class Experiment:
-    def __init__(self, config: Config):
+    def __init__(self, config: Configuration):
         self.__config = config
         self.__timestamp = datetime.now().strftime("%Y%m%dT%H%M")
 

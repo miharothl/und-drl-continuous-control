@@ -7,14 +7,14 @@ from collections import deque
 import sys
 import logging
 
-from drl.environments.i_environment import IEnvironment
-from drl.experiment.config import Config
-from drl.experiment.configuration.trainer_config import TrainerConfig
+from drl.env.i_environment import IEnvironment
+from drl.experiment.configuration import Configuration
+from drl.experiment.config.trainer_config import TrainerConfig
 from drl.experiment.recorder import Recorder
 
 
 class Trainer:
-    def __init__(self, config: Config, session_id, path_models='models'):
+    def __init__(self, config: Configuration, session_id, path_models='models'):
         self.__config = config
         self.__session_id = session_id
 

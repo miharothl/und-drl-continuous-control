@@ -3,7 +3,7 @@ import argparse
 
 from drl import logging
 from drl.experiment.analyser import Analyzer
-from drl.experiment.config import Config
+from drl.experiment.configuration import Configuration
 from drl.experiment.experiment import Experiment
 from drl.experiment.explorer import Explorer
 from drl.logging import init_logging, set_logging_level, transform_verbose_count_to_logging_level
@@ -65,7 +65,7 @@ def parse_arguments(params):
 def main():
     init_logging(logging.ERROR)
 
-    params = Config().get_app_config()
+    params = Configuration().get_app_config()
 
     try:
         args = parse_arguments(params)
@@ -74,7 +74,7 @@ def main():
 
         logging.debug(params)
 
-        config = Config()
+        config = Configuration()
         config.set_current_exp_cfg(args.env)
         environment = Experiment(config)
         explorer = Explorer(config)

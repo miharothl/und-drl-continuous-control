@@ -1,4 +1,4 @@
-from drl.experiment.config import Config
+from drl.experiment.configuration import Configuration
 from drl.experiment.experiment import Experiment
 from drl.experiment.recorder import Recorder
 
@@ -7,7 +7,7 @@ class TestRecorder:
 
     def test_record_recordsParameters_multipleSavesOverwrites(self):
 
-        config = Config(test_flag=True)
+        config = Configuration(test_flag=True)
         session_id = Experiment(config).get_session_id()
         experiments_path = config.get_app_experiments_path(train_mode=False)
         model='model123'

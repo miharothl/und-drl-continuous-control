@@ -1,10 +1,9 @@
 import pytest
 
-from drl.experiment.config import Config
-from drl.experiment.experiment import Experiment
+from drl.experiment.configuration import Configuration
 
 
-class TestEnvironmentConfig:
+class TestAgentConfig:
 
     @staticmethod
     def get():
@@ -12,7 +11,7 @@ class TestEnvironmentConfig:
             {
                 "experiment_cfgs": [
                     {
-                        "id": "lunarlander",
+                        "id": "lunarlander-dqn",
                         "gym_id": "LunarLander-v2",
                         "agent_cfg": {
                             "action_size": 4,
@@ -57,17 +56,62 @@ class TestEnvironmentConfig:
                         }
                     },
                     {
-                        "id": "breakout",
-                        "gym_id": "Breakout-ram-v4",
+                        "id": "lunarlander-dqn-withframes",
+                        "gym_id": "LunarLander-v2",
                         "agent_cfg": {
-                            "action_size": 3,
+                            "action_size": 4,
+                            "discrete": True,
+                            "num_frames": 10,
+                            "state_rgb": False,
+                            "state_size": 8
+                        },
+                        "environment_cfg": {
+                            "env_type": "gym"
+                        },
+                        "neural_network_cfg": {
+                            "hidden_layers": [
+                                64,
+                                64
+                            ]
+                        },
+                        "reinforcement_learning_cfg": {
+                            "algorithm_type": "dqn"
+                        },
+                        "replay_memory_cfg": {
+                            "buffer_size": 100000,
+                            "prioritized_replay": True,
+                            "prioritized_replay_alpha": 0.6,
+                            "prioritized_replay_beta0": 0.4,
+                            "prioritized_replay_eps": 1e-06
+                        },
+                        "trainer_cfg": {
+                            "batch_size": 64,
+                            "epsilon_decay": 0.995,
+                            "epsilon_max": 1,
+                            "epsilon_min": 0.01,
+                            "eval_frequency": 16,
+                            "eval_steps": 4,
+                            "gamma": 0.99,
+                            "human_flag": False,
+                            "learning_rate": 0.0001,
+                            "max_episode_steps": 2,
+                            "max_steps": 128,
+                            "tau": 0.001,
+                            "update_every": 4
+                        }
+                    },
+                    {
+                        "id": "lunarlander-dqn-noprio",
+                        "gym_id": "LunarLander-v2",
+                        "agent_cfg": {
+                            "action_size": 4,
                             "discrete": True,
                             "num_frames": 1,
                             "state_rgb": False,
-                            "state_size": 128
+                            "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "spaceinvaders_atari_gym"
+                            "env_type": "gym"
                         },
                         "neural_network_cfg": {
                             "hidden_layers": [
@@ -80,7 +124,7 @@ class TestEnvironmentConfig:
                         },
                         "replay_memory_cfg": {
                             "buffer_size": 100000,
-                            "prioritized_replay": True,
+                            "prioritized_replay": False,
                             "prioritized_replay_alpha": 0.6,
                             "prioritized_replay_beta0": 0.4,
                             "prioritized_replay_eps": 1e-06
@@ -102,17 +146,17 @@ class TestEnvironmentConfig:
                         }
                     },
                     {
-                        "id": "breakout-rgb",
-                        "gym_id": "Breakout-v4",
+                        "id": "lunarlander-dqn-dueling",
+                        "gym_id": "LunarLander-v2",
                         "agent_cfg": {
-                            "action_size": 3,
+                            "action_size": 4,
                             "discrete": True,
                             "num_frames": 1,
-                            "state_rgb": True,
-                            "state_size": [80, 80]
+                            "state_rgb": False,
+                            "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "spaceinvaders_atari_gym"
+                            "env_type": "gym"
                         },
                         "neural_network_cfg": {
                             "hidden_layers": [
@@ -121,7 +165,7 @@ class TestEnvironmentConfig:
                             ]
                         },
                         "reinforcement_learning_cfg": {
-                            "algorithm_type": "dqn"
+                            "algorithm_type": "dqn_dueling"
                         },
                         "replay_memory_cfg": {
                             "buffer_size": 100000,
@@ -147,8 +191,8 @@ class TestEnvironmentConfig:
                         }
                     },
                     {
-                        'id': 'banana',
-                        'gym_id': 'env/unity/mac/banana',
+                        "id": "lunarlander-dqn-double",
+                        "gym_id": "LunarLander-v2",
                         "agent_cfg": {
                             "action_size": 4,
                             "discrete": True,
@@ -194,4 +238,4 @@ class TestEnvironmentConfig:
                 ]
             }
 
-        return Config(test_flag=True, exp_cfg=cfg)
+        return Configuration(test_flag=True, exp_cfg=cfg)

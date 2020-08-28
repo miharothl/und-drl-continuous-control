@@ -1,4 +1,4 @@
-from drl.experiment.configuration.config_base import ConfigBase
+from drl.experiment.config.config_base import ConfigBase
 
 
 class TrainerConfig(ConfigBase):

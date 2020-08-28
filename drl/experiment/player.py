@@ -1,14 +1,14 @@
 import torch
 import matplotlib.pyplot as plt
 
-from drl.environments.i_environment import IEnvironment
-from drl.experiment.config import Config
+from drl.env.i_environment import IEnvironment
+from drl.experiment.configuration import Configuration
 from drl.experiment.recorder import Recorder
 from drl.image import preprocess_image
 
 
 class Player:
-    def __init__(self, env: IEnvironment, agent, config: Config, session_id, path_models='models'):
+    def __init__(self, env: IEnvironment, agent, config: Configuration, session_id, path_models='models'):
         self.__env = env
         self.__agent = agent
         self.__config = config

@@ -1,8 +1,9 @@
 import torch
 from typing import Tuple
 
-from drl.models.classic.model import DqnDueling2Hidden, Dqn2Hidden, Dqn3Hidden, Dqn4Hidden
-from drl.models.rgb.model_rgb import QNetwork2a
+from drl.experiment.configuration import Configuration
+from drl.model.model_dqn import DqnDueling2Hidden, Dqn2Hidden, Dqn3Hidden, Dqn4Hidden
+from drl.model.model_dqn_rgb import QNetwork2a
 
 
 class ModelFactory:
@@ -11,15 +12,25 @@ class ModelFactory:
         pass
 
     @staticmethod
-    def create(type, fc_units, num_frames, state_size, action_size, dueling, seed, device)\
-            -> Tuple[torch.nn.Module, torch.nn.Module]:
+    def create(seed, device, cfg: Configuration) -> Tuple[torch.nn.Module, torch.nn.Module]:
 
-        supported_types = ['classic', 'rgb']
+        if cfg.get_current_exp_cfg().agent_cfg.state_rgb is True:
+            network_type = 'rgb'
+        else:
+            network_type = 'classic'
 
-        if type not in supported_types:
-            assert ("Type {} not supported. Supported types: {}".format(type, supported_types))
+        dueling = False
+        if cfg.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type == 'dqn_dueling':
+            dueling = True
 
-        if type == "classic":
+        fc_units = cfg.get_current_exp_cfg().neural_network_cfg.hidden_layers
+        num_frames = cfg.get_current_exp_cfg().agent_cfg.num_frames
+        state_size = cfg.get_current_exp_cfg().agent_cfg.state_size
+        action_size = cfg.get_current_exp_cfg().agent_cfg.action_size
+        seed = seed
+        device = device
+
+        if network_type == "classic":
 
             if len(fc_units) == 2:
 

@@ -1,10 +1,10 @@
 import pytest
 
-from drl.experiment.config import Config
+from drl.experiment.configuration import Configuration
 from drl.experiment.experiment import Experiment
 
 
-class TestExperimentConfig:
+class TestEnvConfig:
 
     @staticmethod
     def get():
@@ -148,16 +148,16 @@ class TestExperimentConfig:
                     },
                     {
                         'id': 'banana',
-                        'gym_id': 'env/unity/mac/banana',
+                        'gym_id': 'env/unity/mac/banana.app',
                         "agent_cfg": {
                             "action_size": 4,
                             "discrete": True,
                             "num_frames": 1,
                             "state_rgb": False,
-                            "state_size": 8
+                            "state_size": 37
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "unity"
                         },
                         "neural_network_cfg": {
                             "hidden_layers": [
@@ -194,4 +194,4 @@ class TestExperimentConfig:
                 ]
             }
 
-        return Config(test_flag=True, exp_cfg=cfg)
+        return Configuration(test_flag=True, exp_cfg=cfg)
