@@ -4,6 +4,7 @@ from collections import deque
 import sys
 import logging
 
+from drl.agent.i_agent import IAgent
 from drl.env.i_environment import IEnvironment
 from drl.experiment.configuration import Configuration
 from drl.experiment.config.trainer_config import TrainerConfig
@@ -11,12 +12,17 @@ from drl.experiment.recorder import Recorder
 from drl.experiment.train.trainer import Trainer
 
 
-class DqnTrainer(Trainer):
+class MasterTrainer(Trainer):
     def __init__(self, cfg: Configuration, session_id, path_models='models'):
 
-        super(DqnTrainer, self).__init__(cfg, session_id)
+        super(MasterTrainer, self).__init__(cfg, session_id)
 
-    def train(self, agent, env: IEnvironment, model_filename=None):
+        if cfg.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type.startswith('ddpg'):
+            self.use_epsilon = False
+        else:
+            self.use_epsilon = True
+
+    def train(self, agent: IAgent, env: IEnvironment, model_filename=None):
         """Deep Q-Learning.
 
         Params
@@ -31,7 +37,11 @@ class DqnTrainer(Trainer):
         trainer_cfg: TrainerConfig = self.cfg.get_current_exp_cfg().trainer_cfg
 
         scores_window = deque(maxlen=100)  # last 100 scores
-        eps = trainer_cfg.epsilon_max      # initialize epsilon
+
+        if self.use_epsilon is True:
+            eps = trainer_cfg.epsilon_max      # initialize epsilon
+        else:
+            eps = -1
 
         loss_window = deque(maxlen=100)
         pos_reward_ratio_window = deque(maxlen=100)
@@ -98,7 +108,10 @@ class DqnTrainer(Trainer):
                         score = 0
                         epoch_episode += 1
 
-                    action = agent.act(state, eps)
+                    if self.use_epsilon is True:
+                        action = agent.act(state, eps)
+                    else:
+                        action = agent.act(state)
 
                     if new_life:
                         start_game_action = env.start_game_action()
@@ -157,7 +170,8 @@ class DqnTrainer(Trainer):
                 if step <= trainer_cfg.max_steps:
                     scores_window.append(score)  # save most recent score
 
-                eps = max(trainer_cfg.epsilon_min, trainer_cfg.epsilon_decay * eps)  # decrease epsilon
+                if self.use_epsilon is True:
+                    eps = max(trainer_cfg.epsilon_min, trainer_cfg.epsilon_decay * eps)  # decrease epsilon
 
                 # sys.stdout.flush()
 
@@ -238,9 +252,11 @@ class DqnTrainer(Trainer):
                 [epoch, np.mean(scores_window), np.mean(val_scores_window), eps, np.mean(loss_window), beta])
             epoch_recorder.save()
 
-            model_filename = self.get_model_filename(epoch, np.mean(scores_window), np.mean(val_scores_window), eps)
+            models = agent.get_models()
 
-            torch.save(agent.current_model.state_dict(), model_filename)
+            for model in models:
+                model_filename = self.get_model_filename(model.name, epoch, np.mean(scores_window), np.mean(val_scores_window), eps)
+                torch.save(model.weights.state_dict(), model_filename)
 
             epoch += 1
 

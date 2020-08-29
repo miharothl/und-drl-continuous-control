@@ -65,6 +65,8 @@ class DdpgAgent():
             experiences = self.memory.sample()
             self.learn(experiences, GAMMA)
 
+        return 0, 0, 0, 0
+
     def act(self, state, add_noise=True):
         """Returns actions for given state as per current policy."""
         state = torch.from_numpy(state).float().to(device)
@@ -133,6 +135,21 @@ class DdpgAgent():
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)
 
+    def pre_process(self, state):
+        return state
+
+    def get_models(self):
+
+        model_actor = namedtuple('name', 'weights')
+        model_actor.name = 'current_actor'
+        model_actor.weights = self.actor_local
+
+        model_critic = namedtuple('name', 'weights')
+        model_critic.name = 'current_critic'
+        model_critic.weights = self.critic_local
+
+        return [model_actor, model_critic]
+
 class OUNoise:
     """Ornstein-Uhlenbeck process."""
 
@@ -155,6 +172,8 @@ class OUNoise:
         self.state = x + dx
         return self.state
 
+
+
 class ReplayBuffer:
     """Fixed-size buffer to store experience tuples."""
 
@@ -170,12 +189,14 @@ class ReplayBuffer:
         self.batch_size = batch_size
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
         self.seed = random.seed(seed)
-    
+
     def add(self, state, action, reward, next_state, done):
         """Add a new experience to memory."""
         e = self.experience(state, action, reward, next_state, done)
         self.memory.append(e)
-    
+
+
+
     def sample(self):
         """Randomly sample a batch of experiences from memory."""
         experiences = random.sample(self.memory, k=self.batch_size)

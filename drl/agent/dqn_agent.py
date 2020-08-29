@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 import numpy as np
 import random
 import torch
@@ -106,6 +108,14 @@ class DqnAgent(Agent):
             return np.argmax(action_values.cpu().data.numpy())
         else:
             return random.choice(np.arange(self.agent_cfg.action_size))
+
+    def get_models(self):
+
+        model = namedtuple('name', 'weights')
+        model.name = 'current'
+        model.weights = self.current_model
+
+        return [model]
 
     def learn(self, experiences, gamma):
         """Update value parameters using given batch of experience tuples.

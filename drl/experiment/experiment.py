@@ -4,7 +4,6 @@ from drl.agent.agent_factory import AgentFactory
 from drl.env.environment_factory import EnvironmentFactory
 from drl.experiment.configuration import Configuration
 from drl.experiment.player import Player
-from drl.experiment.train.dqn_trainer import DqnTrainer
 from drl.experiment.train.trainer_factory import TrainerFactory
 
 

@@ -14,15 +14,15 @@ class Trainer(ITrainer):
         self.cfg = config
         self.session_id = session_id
 
-    def get_model_filename(self, episode, score, val_score, eps):
+    def get_model_filename(self, name, episode, score, val_score, eps):
 
         session_path = os.path.join(self.cfg.get_app_experiments_path(train_mode=True), self.session_id)
         Path(session_path).mkdir(parents=True, exist_ok=True)
 
         model_id = re.sub('[^0-9a-zA-Z]+', '', self.cfg.get_current_exp_cfg().id)
         model_id = model_id.lower()
-        filename = "{}_{}_{}_{:.2f}_{:.2f}_{:.2f}.pth".format(
-            model_id, self.session_id, episode, score, val_score, eps)
+        filename = "{}_{}_{}_{}_{:.2f}_{:.2f}_{:.2f}.pth".format(
+            model_id, name, self.session_id, episode, score, val_score, eps)
 
         model_path = os.path.join(session_path, filename)
 

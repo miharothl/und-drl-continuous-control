@@ -8,6 +8,10 @@ class IAgent(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def get_models(self):
+        pass
+
+    @abc.abstractmethod
     def learn(self, experiences, gamma):
         pass
 
@@ -22,3 +26,5 @@ class IAgent(abc.ABC):
     @abc.abstractmethod
     def step(self, state, action, reward, next_state, done):
         pass
+
+

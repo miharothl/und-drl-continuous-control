@@ -31,7 +31,7 @@ class TestEnvironmentTrain:
         scores = experiment.train()
         assert len(scores) == (config.get_current_exp_cfg().trainer_cfg.max_steps / config.get_current_exp_cfg().trainer_cfg.max_episode_steps)
 
-    def test_train_agent_dueling(self):
+    def test_train_agent_dqn_dueling(self):
         config = TestAgentConfig.get()
         experiment = Experiment(config)
 
@@ -39,10 +39,18 @@ class TestEnvironmentTrain:
         scores = experiment.train()
         assert len(scores) == (config.get_current_exp_cfg().trainer_cfg.max_steps / config.get_current_exp_cfg().trainer_cfg.max_episode_steps)
 
-    def test_train_agent_double(self):
+    def test_train_agent_dqn_double(self):
         config = TestAgentConfig.get()
         experiment = Experiment(config)
 
         experiment.set_env('lunarlander-dqn-double')
+        scores = experiment.train()
+        assert len(scores) == (config.get_current_exp_cfg().trainer_cfg.max_steps / config.get_current_exp_cfg().trainer_cfg.max_episode_steps)
+
+    def test_train_agent_ddpg(self):
+        config = TestAgentConfig.get()
+        experiment = Experiment(config)
+
+        experiment.set_env('walker-ddpg')
         scores = experiment.train()
         assert len(scores) == (config.get_current_exp_cfg().trainer_cfg.max_steps / config.get_current_exp_cfg().trainer_cfg.max_episode_steps)
