@@ -4,7 +4,8 @@ from drl.agent.agent_factory import AgentFactory
 from drl.env.environment_factory import EnvironmentFactory
 from drl.experiment.configuration import Configuration
 from drl.experiment.player import Player
-from drl.experiment.trainer import Trainer
+from drl.experiment.train.dqn_trainer import DqnTrainer
+from drl.experiment.train.trainer_factory import TrainerFactory
 
 
 class Experiment:
@@ -55,8 +56,8 @@ class Experiment:
 
     def train(self, model=None):
 
-        trainer = Trainer(
-            config=self.__config,
+        trainer = TrainerFactory.create(
+            cfg=self.__config,
             session_id=self.get_session_id()
         )
 

@@ -1,5 +1,6 @@
 import logging
 
+from drl.agent.ddpg_agent import DdpgAgent
 from drl.agent.dqn_agent import DqnAgent
 from drl.agent.i_agent import IAgent
 from drl.experiment.configuration import Configuration
@@ -11,16 +12,15 @@ class AgentFactory:
         pass
 
     @staticmethod
-    def create(config: Configuration) -> IAgent:
+    def create(config: Configuration, seed=0) -> IAgent:
 
-        action_size = config.get_current_exp_cfg().agent_cfg.action_size
-        state_size = config.get_current_exp_cfg().agent_cfg.state_size
-        state_rgb = config.get_current_exp_cfg().agent_cfg.state_rgb
+        algorithm_type = config.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type
 
-        logging.debug("Agent action size: {}".format(action_size))
-        logging.debug("Agent state size: {}".format(state_size))
-        logging.debug("Agent state RGB: {}".format(state_rgb))
-
-        agent = DqnAgent(seed=0, cfg=config)
+        if algorithm_type.startswith('dqn'):
+            agent = DqnAgent(seed=seed, cfg=config)
+        elif algorithm_type.startswith('ddpg'):
+            agent = DdpgAgent(seed=seed, cfg=config)
+        else:
+            raise Exception("Agent for algorighm '{}' type not supported".format(algorithm_type))
 
         return agent

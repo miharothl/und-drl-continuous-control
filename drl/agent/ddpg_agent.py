@@ -8,6 +8,9 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
+from drl.experiment.configuration import Configuration
+from drl.model.ddpg_model import Actor, Critic
+
 BUFFER_SIZE = int(1e6)  # replay buffer size
 BATCH_SIZE = 128        # minibatch size
 GAMMA = 0.99            # discount factor
@@ -19,10 +22,10 @@ WEIGHT_DECAY = 0.0001   # L2 weight decay
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
-class Agent():
+class DdpgAgent():
     """Interacts with and learns from the environment."""
-    
-    def __init__(self, state_size, action_size, random_seed):
+
+    def __init__(self, seed, cfg: Configuration):
         """Initialize an Agent object.
         
         Params
@@ -31,25 +34,26 @@ class Agent():
             action_size (int): dimension of each action
             random_seed (int): random seed
         """
-        self.state_size = state_size
-        self.action_size = action_size
-        self.seed = random.seed(random_seed)
+
+        self.state_size = cfg.get_current_exp_cfg().agent_cfg.state_size
+        self.action_size = cfg.get_current_exp_cfg().agent_cfg.action_size
+        self.seed = random.seed(seed)
 
         # Actor Network (w/ Target Network)
-        self.actor_local = Actor(state_size, action_size, random_seed).to(device)
-        self.actor_target = Actor(state_size, action_size, random_seed).to(device)
+        self.actor_local = Actor(self.state_size, self.action_size, seed).to(device)
+        self.actor_target = Actor(self.state_size, self.action_size, seed).to(device)
         self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=LR_ACTOR)
 
         # Critic Network (w/ Target Network)
-        self.critic_local = Critic(state_size, action_size, random_seed).to(device)
-        self.critic_target = Critic(state_size, action_size, random_seed).to(device)
+        self.critic_local = Critic(self.state_size, self.action_size, seed).to(device)
+        self.critic_target = Critic(self.state_size, self.action_size, seed).to(device)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
 
         # Noise process
-        self.noise = OUNoise(action_size, random_seed)
+        self.noise = OUNoise(self.action_size, seed)
 
         # Replay memory
-        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
+        self.memory = ReplayBuffer(self.action_size, BUFFER_SIZE, BATCH_SIZE, seed)
     
     def step(self, state, action, reward, next_state, done):
         """Save experience in replay memory, and use random sample from buffer to learn."""
