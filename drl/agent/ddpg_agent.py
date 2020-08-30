@@ -27,6 +27,11 @@ class DdpgAgent():
             action_size (int): dimension of each action
             random_seed (int): random seed
         """
+
+        rl_cfg = cfg.get_current_exp_cfg().reinforcement_learning_cfg
+        trainer_cfg = cfg.get_current_exp_cfg().trainer_cfg
+        replay_memory_cfg = cfg.get_current_exp_cfg().replay_memory_cfg
+
         self.BUFFER_SIZE = int(1e6)  # replay buffer size
         self.BATCH_SIZE = 128        # minibatch size
         self.GAMMA = 0.99            # discount factor
@@ -35,6 +40,13 @@ class DdpgAgent():
         self.LR_CRITIC = 3e-4        # learning rate of the critic
         self.WEIGHT_DECAY = 0.0001   # L2 weight decay
 
+        self.BUFFER_SIZE = replay_memory_cfg.buffer_size
+        self.BATCH_SIZE = trainer_cfg.batch_size
+        self.GAMMA = trainer_cfg.gamma
+        self.TAU = trainer_cfg.tau
+        self.LR_ACTOR = rl_cfg.ddpg_cfg.lr_actor
+        self.LR_CRITIC = rl_cfg.ddpg_cfg.lr_critic
+        self.WEIGHT_DECAY = rl_cfg.ddpg_cfg.weight_decay
 
         self.state_size = cfg.get_current_exp_cfg().agent_cfg.state_size
         self.action_size = cfg.get_current_exp_cfg().agent_cfg.action_size
@@ -120,8 +132,8 @@ class DdpgAgent():
         self.actor_optimizer.step()
 
         # ----------------------- update target networks ----------------------- #
-        self.soft_update(self.critic_local, self.critic_target, TAU)
-        self.soft_update(self.actor_local, self.actor_target, TAU)                     
+        self.soft_update(self.critic_local, self.critic_target, self.TAU)
+        self.soft_update(self.actor_local, self.actor_target, self.TAU)
 
     def soft_update(self, local_model, target_model, tau):
         """Soft update model parameters.
@@ -186,7 +198,7 @@ class ReplayBuffer:
             batch_size (int): size of each training batch
         """
         self.action_size = action_size
-        self.memory = deque(maxlen=buffer_size)  # internal memory (deque)
+        self.memory = deque(maxlen=int(buffer_size))  # internal memory (deque)
         self.batch_size = batch_size
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
         self.seed = random.seed(seed)

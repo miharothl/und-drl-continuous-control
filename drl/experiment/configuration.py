@@ -134,36 +134,83 @@ class Configuration:
                     },
                     "neural_network_cfg": {
                         "hidden_layers": [
-                            64,
-                            64
+                            400,
+                            300
                         ]
                     },
                     "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
-                            "lr_actor": 0.0001,
-                            "lr_critic": 0.0003,
-                            "weight_decay": 0.0001
+                            "lr_actor": 1e-04,
+                            "lr_critic": 3e-04,
+                            "weight_decay":  0
                         }
                     },
                     "replay_memory_cfg": {
-                        "buffer_size": 100000,
+                        "buffer_size": 1e06,
                         "prioritized_replay": True,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 64,
+                        "batch_size": 128,
                         "eval_frequency": 20000,
                         "eval_steps": 3000,
                         "gamma": 0.99,
                         "human_flag": True,
-                        "max_episode_steps": 1000,
+                        "max_episode_steps": 700,
                         "max_steps": 1000000,
-                        "tau": 0.001,
-                        "update_every": 4
+                        "tau": 1e-3,
+                        "update_every": 1
+                    }
+                },
+                {
+                    "id": "pendulum",
+                    "gym_id": "Pendulum-v0",
+                    "agent_cfg": {
+                        "action_size": 1,
+                        "discrete": True,
+                        "num_frames": 1,
+                        "state_rgb": False,
+                        "state_size": 3
+                    },
+                    "environment_cfg": {
+                        "env_type": "gym"
+                    },
+                    "neural_network_cfg": {
+                        "hidden_layers": [
+                            400,
+                            300
+                        ]
+                    },
+                    "reinforcement_learning_cfg": {
+                        "algorithm_type": "ddpg",
+                        "dqn_cfg": None,
+                        "ddpg_cfg": {
+                            "lr_actor": 1e-04,
+                            "lr_critic": 1e-03,
+                            "weight_decay":  0.0001
+                        }
+                    },
+                    "replay_memory_cfg": {
+                        "buffer_size": 1e06,
+                        "prioritized_replay": True,
+                        "prioritized_replay_alpha": 0.6,
+                        "prioritized_replay_beta0": 0.4,
+                        "prioritized_replay_eps": 1e-06
+                    },
+                    "trainer_cfg": {
+                        "batch_size": 128,
+                        "eval_frequency": 20000,
+                        "eval_steps": 3000,
+                        "gamma": 0.99,
+                        "human_flag": True,
+                        "max_episode_steps": 300,
+                        "max_steps": 1000000,
+                        "tau": 1e-3,
+                        "update_every": 1
                     }
                 },
                 ########################################################################################################
@@ -184,38 +231,38 @@ class Configuration:
                     },
                     "neural_network_cfg": {
                         "hidden_layers": [
-                            64,
-                            64
+                            128,
+                            128
                         ]
                     },
                     "reinforcement_learning_cfg": {
-                        "algorithm_type": "dqn",
+                        "algorithm_type": "dqn_dueling",
 
                         "dqn_cfg": {
                             "epsilon_start": 1.0,
-                            "epsilon_end": 0.01,
-                            "epsilon_decay": 0.995,
+                            "epsilon_end": 0.1,
+                            "epsilon_decay": 0.99995,
                             "lr": 0.0001
                         },
                         "ddpg_cfg": None
                     },
                     "replay_memory_cfg": {
-                        "buffer_size": 100000,
+                        "buffer_size": 1e06,
                         "prioritized_replay": True,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 64,
+                        "batch_size": 256,
                         "eval_frequency": 20000,
                         "eval_steps": 3000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
-                        "max_steps": 1000000,
+                        "max_steps": 50e6,
                         "tau": 0.001,
-                        "update_every": 4
+                        "update_every": 100
                     }
                 },
                 {
@@ -326,10 +373,10 @@ class Configuration:
                         "discrete": True,
                         "num_frames": 1,
                         "state_rgb": False,
-                        "state_size": 8
+                        "state_size": 33
                     },
                     "environment_cfg": {
-                        "env_type": "gym"
+                        "env_type": "unity"
                     },
                     "neural_network_cfg": {
                         "hidden_layers": [
@@ -338,14 +385,13 @@ class Configuration:
                         ]
                     },
                     "reinforcement_learning_cfg": {
-                        "algorithm_type": "dqn_double",
-                        "dqn_cfg": {
-                            "epsilon_start": 1.0,
-                            "epsilon_end": 0.01,
-                            "epsilon_decay": 0.995,
-                            "lr": 0.0001
-                        },
-                        "ddpg_cfg": None
+                        "algorithm_type": "ddpg",
+                        "dqn_cfg": None,
+                        "ddpg_cfg": {
+                            "lr_actor": 1e-04,
+                            "lr_critic": 3e-04,
+                            "weight_decay":  0.0001
+                        }
                     },
                     "replay_memory_cfg": {
                         "buffer_size": 100000,
@@ -359,7 +405,7 @@ class Configuration:
                         "eval_frequency": 10200,
                         "eval_steps": 2100,
                         "gamma": 0.99,
-                        "human_flag": False,
+                        "human_flag": True,
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,

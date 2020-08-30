@@ -15,8 +15,14 @@ class DdpgTrainer(Trainer):
 
     def train(self, agent, env: IEnvironment, model_filename=None):
 
-        n_episodes = 2000
-        max_t = 700
+        trainer_cfg = self.cfg.get_current_exp_cfg().trainer_cfg
+
+        # n_episodes = 2000
+        # max_t = 700
+
+        n_episodes = trainer_cfg.max_steps
+        max_t = trainer_cfg.max_episode_steps
+
         scores_deque = deque(maxlen=100)
         scores = []
         max_score = -np.Inf
