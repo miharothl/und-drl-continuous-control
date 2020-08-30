@@ -38,7 +38,7 @@ class DqnAgent(Agent):
 
         # Replay Memory
         if self.replay_memory_cfg.prioritized_replay:
-            self.memory = PrioritizedReplayBuffer(self.replay_memory_cfg.buffer_size, alpha=self.replay_memory_cfg.prioritized_replay_alpha)
+            self.memory = PrioritizedReplayBuffer(int(self.replay_memory_cfg.buffer_size), alpha=self.replay_memory_cfg.prioritized_replay_alpha)
             if self.prioritized_replay_beta_iters is None:
                 prioritized_replay_beta_iters = self.trainer_cfg.max_steps
             self.beta_schedule = LinearSchedule(prioritized_replay_beta_iters,
