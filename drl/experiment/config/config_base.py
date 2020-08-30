@@ -30,3 +30,6 @@ class ConfigBase(object):
         if param not in valid:
             raise ValueError("Hypter-parameter must be one of {}.".format(valid))
 
+    def ensure_exists(self, if_alg_startswith, algorithm_type, cfg):
+        if algorithm_type.startswith(if_alg_startswith) and (cfg is None):
+            raise Exception("'{}' configuration missing".format(if_alg_startswith))

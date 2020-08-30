@@ -34,7 +34,7 @@ class DqnAgent(Agent):
 
         # Q-Network
         self.current_model, self.target_model = ModelFactory.create(seed, device, cfg)
-        self.optimizer = optim.Adam(self.current_model.parameters(), lr=self.trainer_cfg.learning_rate)
+        self.optimizer = optim.Adam(self.current_model.parameters(), lr=self.reinforcement_learning_cfg.dqn_cfg.lr)
 
         # Replay Memory
         if self.replay_memory_cfg.prioritized_replay:

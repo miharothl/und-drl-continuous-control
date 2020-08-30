@@ -35,11 +35,12 @@ class MasterTrainer(Trainer):
         """
 
         trainer_cfg: TrainerConfig = self.cfg.get_current_exp_cfg().trainer_cfg
+        reinforcement_learning_cfg = self.cfg.get_current_exp_cfg().reinforcement_learning_cfg
 
         scores_window = deque(maxlen=100)  # last 100 scores
 
         if self.use_epsilon is True:
-            eps = trainer_cfg.epsilon_max      # initialize epsilon
+            eps = reinforcement_learning_cfg.dqn_cfg.epsilon_start   # initialize epsilon
         else:
             eps = -1
 
@@ -171,7 +172,8 @@ class MasterTrainer(Trainer):
                     scores_window.append(score)  # save most recent score
 
                 if self.use_epsilon is True:
-                    eps = max(trainer_cfg.epsilon_min, trainer_cfg.epsilon_decay * eps)  # decrease epsilon
+                    eps = max(reinforcement_learning_cfg.dqn_cfg.epsilon_end,
+                              reinforcement_learning_cfg.dqn_cfg.epsilon_decay * eps)  # decrease epsilon
 
                 # sys.stdout.flush()
 
