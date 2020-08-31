@@ -10,8 +10,10 @@ class TrainerConfig(ConfigBase):
                  human_flag,
                  batch_size,
                  update_every,
+                 num_updates,
                  tau,
                  gamma,
+                 num_agents,
                  ):
 
         self.ensure_betwen_0_and_1(tau)
@@ -24,5 +26,7 @@ class TrainerConfig(ConfigBase):
         self.human_flag = human_flag
         self.batch_size = batch_size
         self.update_every = update_every
+        self.num_updates = num_updates
         self.tau = tau
         self.gamma = gamma
+        self.num_agents = num_agents

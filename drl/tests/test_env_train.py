@@ -23,11 +23,11 @@ class TestEnvTrain:
         scores = experiment.train()
         assert len(scores) == (config.get_current_exp_cfg().trainer_cfg.max_steps / config.get_current_exp_cfg().trainer_cfg.max_episode_steps)
 
-    def test_train_environment_atari_breakout(self):
+    def test_train_environment_atari_breakout_rgb(self):
         config = TestEnvConfig.get()
         experiment = Experiment(config)
 
-        experiment.set_env('breakout')
+        experiment.set_env('breakout-rgb')
         scores = experiment.train()
         assert len(scores) == (config.get_current_exp_cfg().trainer_cfg.max_steps / config.get_current_exp_cfg().trainer_cfg.max_episode_steps)
 

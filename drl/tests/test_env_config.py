@@ -24,19 +24,19 @@ class TestEnvConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -56,7 +56,9 @@ class TestEnvConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -72,19 +74,19 @@ class TestEnvConfig:
                         "environment_cfg": {
                             "env_type": "spaceinvaders_atari_gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -104,7 +106,9 @@ class TestEnvConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -120,19 +124,19 @@ class TestEnvConfig:
                         "environment_cfg": {
                             "env_type": "spaceinvaders_atari_gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -152,7 +156,9 @@ class TestEnvConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -168,19 +174,19 @@ class TestEnvConfig:
                         "environment_cfg": {
                             "env_type": "unity"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_double",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -200,7 +206,9 @@ class TestEnvConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                 ]

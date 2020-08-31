@@ -19,7 +19,6 @@ class ReinforcementLearningConfig(ConfigBase):
         self.ensure_exists(if_alg_startswith='dqn', algorithm_type=algorithm_type, cfg=self.dqn_cfg)
         self.ensure_exists(if_alg_startswith='ddpg', algorithm_type=algorithm_type, cfg=self.ddpg_cfg)
 
-
     @classmethod
     def from_json(cls, data):
 

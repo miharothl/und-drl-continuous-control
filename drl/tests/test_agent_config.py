@@ -23,19 +23,19 @@ class TestAgentConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
-                        "reinforcement_learning_cfg": {
+                       "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -55,7 +55,9 @@ class TestAgentConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -71,19 +73,19 @@ class TestAgentConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
-                        "reinforcement_learning_cfg": {
+                       "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -103,7 +105,9 @@ class TestAgentConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -119,19 +123,19 @@ class TestAgentConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
-                        "reinforcement_learning_cfg": {
+                       "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -151,7 +155,9 @@ class TestAgentConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -167,19 +173,19 @@ class TestAgentConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
-                        "reinforcement_learning_cfg": {
+                       "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_dueling",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -199,7 +205,9 @@ class TestAgentConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                     {
@@ -215,19 +223,19 @@ class TestAgentConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
-                        "reinforcement_learning_cfg": {
+                       "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_double",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.01,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.0001
+                                "lr": 0.0001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                         },
@@ -247,7 +255,9 @@ class TestAgentConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
 
                     },
@@ -264,19 +274,28 @@ class TestAgentConfig:
                         "environment_cfg": {
                             "env_type": "gym"
                         },
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "ddpg",
                             "dqn_cfg": None,
                             "ddpg_cfg": {
+                                "epsilon_start": 1.0,
+                                "epsilon_end": 0.01,
+                                "epsilon_decay": 0.995,
                                 "lr_actor": 0.0001,
                                 "lr_critic": 0.0003,
-                                "weight_decay": 0.0001
+                                "weight_decay": 0.0001,
+                                "actor_model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
+                                "critic_model_cfg": {
+                                    "hidden_layers": [
+                                        128,
+                                        128
+                                    ]
+                                },
                             }
                         },
                         "replay_memory_cfg": {
@@ -295,7 +314,9 @@ class TestAgentConfig:
                             "max_episode_steps": 2,
                             "max_steps": 128,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
 
                     },

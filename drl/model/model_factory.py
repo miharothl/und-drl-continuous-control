@@ -23,7 +23,7 @@ class ModelFactory:
         if cfg.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type == 'dqn_dueling':
             dueling = True
 
-        fc_units = cfg.get_current_exp_cfg().neural_network_cfg.hidden_layers
+        fc_units = cfg.get_current_exp_cfg().reinforcement_learning_cfg.dqn_cfg.model_cfg.hidden_layers
         num_frames = cfg.get_current_exp_cfg().agent_cfg.num_frames
         state_size = cfg.get_current_exp_cfg().agent_cfg.state_size
         action_size = cfg.get_current_exp_cfg().agent_cfg.action_size
@@ -85,7 +85,7 @@ class ModelFactory:
 
             return current_model, target_model
 
-        if type == 'rgb':
+        if network_type == 'rgb':
             current_model = QNetwork2a(state_size[0], state_size[1], num_frames, action_size, seed).to(device)
             target_model = QNetwork2a(state_size[0], state_size[1], num_frames, action_size, seed).to(device)
 

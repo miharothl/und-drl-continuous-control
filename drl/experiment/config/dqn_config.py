@@ -1,4 +1,5 @@
 from drl.experiment.config.config_base import ConfigBase
+from drl.experiment.config.neural_network_config import NeuralNetworkConfig
 
 
 class DqnConfig(ConfigBase):
@@ -6,7 +7,8 @@ class DqnConfig(ConfigBase):
                  epsilon_start,
                  epsilon_end,
                  epsilon_decay,
-                 lr
+                 lr,
+                 model_cfg : NeuralNetworkConfig
                  ):
 
         self.ensure_betwen_0_and_1(epsilon_start)
@@ -20,3 +22,11 @@ class DqnConfig(ConfigBase):
         self.epsilon_end = epsilon_end
         self.epsilon_decay = epsilon_decay
         self.lr = lr
+        self.model_cfg = model_cfg
+
+    @classmethod
+    def from_json(cls, data):
+
+        data['model_cfg'] = NeuralNetworkConfig.from_json(data['model_cfg'])
+
+        return cls(**data)

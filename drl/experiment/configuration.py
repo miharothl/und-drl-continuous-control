@@ -84,19 +84,19 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "gym"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            64,
-                            64
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn",
                         "dqn_cfg": {
                             "epsilon_start": 1,
                             "epsilon_end": 0.01,
                             "epsilon_decay": 0.995,
-                            "lr": 0.0001
+                            "lr": 0.0001,
+                            "model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
                         },
                         "ddpg_cfg": None
                     },
@@ -116,7 +116,9 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 1000000,
                         "tau": 0.001,
-                        "update_every": 4
+                        "update_every": 4,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
                 {
@@ -132,19 +134,28 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "gym"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            400,
-                            300
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
+                            "epsilon_start": 1.0,
+                            "epsilon_end": 0.01,
+                            "epsilon_decay": 0.995,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
-                            "weight_decay":  0
+                            "weight_decay":  0,
+                            "actor_model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
+                            "critic_model_cfg": {
+                                "hidden_layers": [
+                                    128,
+                                    128
+                                ]
+                            },
                         }
                     },
                     "replay_memory_cfg": {
@@ -163,7 +174,9 @@ class Configuration:
                         "max_episode_steps": 700,
                         "max_steps": 1e06,
                         "tau": 1e-3,
-                        "update_every": 1
+                        "update_every": 1,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
                 {
@@ -179,19 +192,28 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "gym"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            400,
-                            300
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
+                            "epsilon_start": 1.0,
+                            "epsilon_end": 0.01,
+                            "epsilon_decay": 0.995,
                             "lr_actor": 1e-04,
                             "lr_critic": 1e-03,
-                            "weight_decay":  0.0001
+                            "weight_decay":  0.0001,
+                            "actor_model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
+                            "critic_model_cfg": {
+                                "hidden_layers": [
+                                    128,
+                                    128
+                                ]
+                            },
                         }
                     },
                     "replay_memory_cfg": {
@@ -210,7 +232,9 @@ class Configuration:
                         "max_episode_steps": 300,
                         "max_steps": 1e06,
                         "tau": 1e-3,
-                        "update_every": 1
+                        "update_every": 1,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
                 ########################################################################################################
@@ -229,20 +253,20 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "spaceinvaders_atari_gym"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            128,
-                            128
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_dueling",
 
                         "dqn_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
                             "epsilon_decay": 0.99995,
-                            "lr": 0.0001
+                            "lr": 0.0001,
+                            "model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
                         },
                         "ddpg_cfg": None
                     },
@@ -262,7 +286,9 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 50e6,
                         "tau": 0.001,
-                        "update_every": 100
+                        "update_every": 100,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
                 {
@@ -278,19 +304,19 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "spaceinvaders_atari_gym"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            64,
-                            64
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn",
                         "dqn_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.01,
                             "epsilon_decay": 0.995,
-                            "lr": 0.0001
+                            "lr": 0.0001,
+                            "model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
                         },
                         "ddpg_cfg": None
                     },
@@ -310,7 +336,9 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 1000000,
                         "tau": 0.001,
-                        "update_every": 4
+                        "update_every": 4,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
 
@@ -330,19 +358,19 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "gym"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            64,
-                            64
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_double",
                         "dqn_cfg": {
                             "epsilon_start": 1,
                             "epsilon_end": 0.01,
                             "epsilon_decay": 0.995,
-                            "lr": 0.0001
+                            "lr": 0.0001,
+                            "model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
                         },
                         "ddpg_cfg": None
                     },
@@ -362,7 +390,9 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
-                        "update_every": 4
+                        "update_every": 4,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
                 {
@@ -378,19 +408,28 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "unity"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            64,
-                            64
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
+                            "epsilon_start": 1.0,
+                            "epsilon_end": 0.01,
+                            "epsilon_decay": 0.995,
                             "lr_actor": 1e-04,
                             "lr_critic": 1e-03,
-                            "weight_decay":  0
+                            "weight_decay":  0,
+                            "actor_model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
+                            "critic_model_cfg": {
+                                "hidden_layers": [
+                                    128,
+                                    128
+                                ]
+                            },
                         }
                     },
                     "replay_memory_cfg": {
@@ -409,12 +448,14 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
-                        "update_every": 4
+                        "update_every": 4,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
                 {
-                    'id': 'reacher-gpu',
-                    'gym_id': 'env/unity/linux/reacher-single-agent.app',
+                    'id': 'reacher-linux',
+                    'gym_id': 'env/unity/mac/reacher-single-agent-novis.app',
                     "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
@@ -425,19 +466,28 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "unity"
                     },
-                    "neural_network_cfg": {
-                        "hidden_layers": [
-                            64,
-                            64
-                        ]
-                    },
-                    "reinforcement_learning_cfg": {
+                   "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
+                            "epsilon_start": 1.0,
+                            "epsilon_end": 0.01,
+                            "epsilon_decay": 0.995,
                             "lr_actor": 1e-04,
                             "lr_critic": 1e-03,
-                            "weight_decay":  0
+                            "weight_decay":  0,
+                            "actor_model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
+                            "critic_model_cfg": {
+                                "hidden_layers": [
+                                    128,
+                                    128
+                                ]
+                            },
                         }
                     },
                     "replay_memory_cfg": {
@@ -456,7 +506,9 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
-                        "update_every": 4
+                        "update_every": 4,
+                        "num_updates": 1,
+                        "num_agents": 1
                     }
                 },
             ]

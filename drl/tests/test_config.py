@@ -33,13 +33,27 @@ class TestConfig:
             human_flag=False,
             batch_size=64,
             update_every=4,
+            num_updates=1,
             tau=0.001,
             gamma=0.99,
+            num_agents=1
         )
 
         neural_network_cfg = NeuralNetworkConfig(hidden_layers=[64, 64])
 
-        ddpg_cfg = DdpgConfig(lr_actor=1e-4, lr_critic=3e-4, weight_decay=0.0001)
+        actor_model_cfg = NeuralNetworkConfig(hidden_layers=[64, 64])
+        critic_network_cfg = NeuralNetworkConfig(hidden_layers=[128, 128])
+
+        ddpg_cfg = DdpgConfig(
+            epsilon_start=1,
+            epsilon_end=0.1,
+            epsilon_decay=0.995,
+            lr_actor=1e-4,
+            lr_critic=3e-4,
+            weight_decay=0.0001,
+            actor_model_cfg=actor_model_cfg,
+            critic_model_cfg=critic_network_cfg
+        )
 
         reinforcement_learning_cfg = ReinforcementLearningConfig(
             algorithm_type='ddpg',
@@ -60,7 +74,6 @@ class TestConfig:
             agent_cfg=agent_cfg,
             environment_cfg=environment_cfg,
             trainer_cfg=trainer_cfg,
-            neural_network_cfg=neural_network_cfg,
             reinforcement_learning_cfg=reinforcement_learning_cfg,
             replay_memory_cfg=replay_memory_cfg
         )
@@ -71,7 +84,6 @@ class TestConfig:
             agent_cfg=agent_cfg,
             environment_cfg=environment_cfg,
             trainer_cfg=trainer_cfg,
-            neural_network_cfg=neural_network_cfg,
             reinforcement_learning_cfg=reinforcement_learning_cfg,
             replay_memory_cfg=replay_memory_cfg
         )
@@ -92,7 +104,6 @@ class TestConfig:
         assert current.agent_cfg == agent_cfg
         assert current.environment_cfg == environment_cfg
         assert current.trainer_cfg == trainer_cfg
-        assert current.neural_network_cfg == neural_network_cfg
         assert current.reinforcement_learning_cfg == reinforcement_learning_cfg
         assert current.replay_memory_cfg == replay_memory_cfg
 
@@ -144,7 +155,9 @@ class TestConfig:
                             "max_episode_steps": 1000,
                             "max_steps": 1000000,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                 ]
@@ -171,19 +184,19 @@ class TestConfig:
                         },
                         "id": "exp_id_1",
                         "gym_id": "gym_exp_id_1",
-                        "neural_network_cfg": {
-                            "hidden_layers": [
-                                64,
-                                64
-                            ]
-                        },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
                                 "epsilon_end": 0.1,
                                 "epsilon_decay": 0.995,
-                                "lr": 0.00001
+                                "lr": 0.00001,
+                                "model_cfg": {
+                                    "hidden_layers": [
+                                        64,
+                                        64
+                                    ]
+                                },
                             },
                             "ddpg_cfg": None
                             #     {
@@ -208,7 +221,9 @@ class TestConfig:
                             "max_episode_steps": 1000,
                             "max_steps": 1000000,
                             "tau": 0.001,
-                            "update_every": 4
+                            "update_every": 4,
+                            "num_updates": 1,
+                            "num_agents": 1
                         }
                     },
                 ]

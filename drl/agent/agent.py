@@ -23,9 +23,6 @@ class Agent(IAgent):
         self.replay_memory_cfg = cfg.get_current_exp_cfg().replay_memory_cfg
         self.prioritized_replay_beta_iters = None
 
-        # network parameters
-        self.neural_network_cfg = cfg.get_current_exp_cfg().neural_network_cfg
-
         # reinforcement learning parameters
         self.reinforcement_learning_cfg = cfg.get_current_exp_cfg().reinforcement_learning_cfg
 
