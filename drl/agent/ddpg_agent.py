@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from drl.experiment.configuration import Configuration
-from drl.model.ddpg_model import Actor, Critic, ActorPendulum, CriticPendulum
+from drl.model.ddpg_model import Actor, Critic, ActorPendulum, CriticPendulum, Actor3, Critic3
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -28,7 +28,7 @@ class DdpgAgent():
         """
 
         rl_cfg = cfg.get_current_exp_cfg().reinforcement_learning_cfg
-        trainer_cfg = cfg.get_current_exp_cfg().trainer_cfg
+        self.trainer_cfg = cfg.get_current_exp_cfg().trainer_cfg
         replay_memory_cfg = cfg.get_current_exp_cfg().replay_memory_cfg
 
         self.BUFFER_SIZE = int(1e6)  # replay buffer size
@@ -40,9 +40,9 @@ class DdpgAgent():
         self.WEIGHT_DECAY = 0.0001   # L2 weight decay
 
         self.BUFFER_SIZE = replay_memory_cfg.buffer_size
-        self.BATCH_SIZE = trainer_cfg.batch_size
-        self.GAMMA = trainer_cfg.gamma
-        self.TAU = trainer_cfg.tau
+        self.BATCH_SIZE = self.trainer_cfg.batch_size
+        self.GAMMA = self.trainer_cfg.gamma
+        self.TAU = self.trainer_cfg.tau
         self.LR_ACTOR = rl_cfg.ddpg_cfg.lr_actor
         self.LR_CRITIC = rl_cfg.ddpg_cfg.lr_critic
         self.WEIGHT_DECAY = rl_cfg.ddpg_cfg.weight_decay
@@ -52,30 +52,39 @@ class DdpgAgent():
         self.seed = random.seed(seed)
 
         # Actor Network (w/ Target Network)
-        self.actor_local = ActorPendulum(self.state_size, self.action_size, seed).to(device)
-        self.actor_target = ActorPendulum(self.state_size, self.action_size, seed).to(device)
+        self.actor_local = Actor3(self.state_size, self.action_size, seed).to(device)
+        self.actor_target = Actor3(self.state_size, self.action_size, seed).to(device)
         self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=self.LR_ACTOR)
 
         # Critic Network (w/ Target Network)
-        self.critic_local = CriticPendulum(self.state_size, self.action_size, seed).to(device)
-        self.critic_target = CriticPendulum(self.state_size, self.action_size, seed).to(device)
+        self.critic_local = Critic3(self.state_size, self.action_size, seed).to(device)
+        self.critic_target = Critic3(self.state_size, self.action_size, seed).to(device)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=self.LR_CRITIC, weight_decay=self.WEIGHT_DECAY)
 
         # Noise process
         self.noise = OUNoise(self.action_size, seed)
 
+        self.eps=1
+
         # Replay memory
         self.memory = ReplayBuffer(self.action_size, self.BUFFER_SIZE, self.BATCH_SIZE, seed)
-    
+
+        # Initialize time step (for updating every UPDATE_EVERY steps)
+        self.step_update_counter = 0
+
     def step(self, state, action, reward, next_state, done):
         """Save experience in replay memory, and use random sample from buffer to learn."""
         # Save experience / reward
         self.memory.add(state, action, reward, next_state, done)
 
-        # Learn, if enough samples are available in memory
-        if len(self.memory) > self.BATCH_SIZE:
-            experiences = self.memory.sample()
-            self.learn(experiences, self.GAMMA)
+        # Learn every UPDATE_EVERY time steps.
+        self.step_update_counter = (self.step_update_counter + 1) % self.trainer_cfg.update_every
+        if self.step_update_counter == 0:
+
+            # Learn, if enough samples are available in memory
+            if len(self.memory) > self.BATCH_SIZE:
+                experiences = self.memory.sample()
+                self.learn(experiences, self.GAMMA)
 
         return 0, 0, 0, 0
 
@@ -87,7 +96,8 @@ class DdpgAgent():
             action = self.actor_local(state).cpu().data.numpy()
         self.actor_local.train()
         if add_noise:
-            action += self.noise.sample()
+            action += self.noise.sample() * self.eps
+            self.eps= self.eps * 0.999995
         return np.clip(action, -1, 1)
 
     def reset(self):
@@ -180,7 +190,7 @@ class OUNoise:
     def sample(self):
         """Update internal state and return it as a noise sample."""
         x = self.state
-        dx = self.theta * (self.mu - x) + self.sigma * np.array([random.random() for i in range(len(x))])
+        dx = self.theta * (self.mu - x) + self.sigma * np.array([np.random.randn() for i in range(len(x))])
         self.state = x + dx
         return self.state
 

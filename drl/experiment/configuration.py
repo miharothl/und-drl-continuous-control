@@ -389,8 +389,8 @@ class Configuration:
                         "dqn_cfg": None,
                         "ddpg_cfg": {
                             "lr_actor": 1e-04,
-                            "lr_critic": 3e-04,
-                            "weight_decay":  0.0001
+                            "lr_critic": 1e-03,
+                            "weight_decay":  0
                         }
                     },
                     "replay_memory_cfg": {
@@ -401,8 +401,55 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 64,
-                        "eval_frequency": 10200,
+                        "batch_size": 128,
+                        "eval_frequency": 10000,
+                        "eval_steps": 2100,
+                        "gamma": 0.99,
+                        "human_flag": False,
+                        "max_episode_steps": 1000,
+                        "max_steps": 600000,
+                        "tau": 0.001,
+                        "update_every": 4
+                    }
+                },
+                {
+                    'id': 'reacher-gpu',
+                    'gym_id': 'env/unity/linux/reacher-single-agent.app',
+                    "agent_cfg": {
+                        "action_size": 4,
+                        "discrete": True,
+                        "num_frames": 1,
+                        "state_rgb": False,
+                        "state_size": 33
+                    },
+                    "environment_cfg": {
+                        "env_type": "unity"
+                    },
+                    "neural_network_cfg": {
+                        "hidden_layers": [
+                            64,
+                            64
+                        ]
+                    },
+                    "reinforcement_learning_cfg": {
+                        "algorithm_type": "ddpg",
+                        "dqn_cfg": None,
+                        "ddpg_cfg": {
+                            "lr_actor": 1e-04,
+                            "lr_critic": 1e-03,
+                            "weight_decay":  0
+                        }
+                    },
+                    "replay_memory_cfg": {
+                        "buffer_size": 100000,
+                        "prioritized_replay": True,
+                        "prioritized_replay_alpha": 0.6,
+                        "prioritized_replay_beta0": 0.4,
+                        "prioritized_replay_eps": 1e-06
+                    },
+                    "trainer_cfg": {
+                        "batch_size": 128,
+                        "eval_frequency": 10000,
                         "eval_steps": 2100,
                         "gamma": 0.99,
                         "human_flag": False,
