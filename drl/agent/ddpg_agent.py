@@ -9,8 +9,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from drl.experiment.configuration import Configuration
-from drl.model.ddpg_model import Actor, Critic
-
+from drl.model.ddpg_model import Actor, Critic, ActorPendulum, CriticPendulum
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -53,13 +52,13 @@ class DdpgAgent():
         self.seed = random.seed(seed)
 
         # Actor Network (w/ Target Network)
-        self.actor_local = Actor(self.state_size, self.action_size, seed).to(device)
-        self.actor_target = Actor(self.state_size, self.action_size, seed).to(device)
+        self.actor_local = ActorPendulum(self.state_size, self.action_size, seed).to(device)
+        self.actor_target = ActorPendulum(self.state_size, self.action_size, seed).to(device)
         self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=self.LR_ACTOR)
 
         # Critic Network (w/ Target Network)
-        self.critic_local = Critic(self.state_size, self.action_size, seed).to(device)
-        self.critic_target = Critic(self.state_size, self.action_size, seed).to(device)
+        self.critic_local = CriticPendulum(self.state_size, self.action_size, seed).to(device)
+        self.critic_target = CriticPendulum(self.state_size, self.action_size, seed).to(device)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=self.LR_CRITIC, weight_decay=self.WEIGHT_DECAY)
 
         # Noise process

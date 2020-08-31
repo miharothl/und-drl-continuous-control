@@ -148,7 +148,7 @@ class Configuration:
                         }
                     },
                     "replay_memory_cfg": {
-                        "buffer_size": 1e06,
+                        "buffer_size": 1e05,
                         "prioritized_replay": True,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
@@ -159,9 +159,9 @@ class Configuration:
                         "eval_frequency": 20000,
                         "eval_steps": 3000,
                         "gamma": 0.99,
-                        "human_flag": True,
+                        "human_flag": False,
                         "max_episode_steps": 700,
-                        "max_steps": 1000000,
+                        "max_steps": 1e06,
                         "tau": 1e-3,
                         "update_every": 1
                     }
@@ -206,9 +206,9 @@ class Configuration:
                         "eval_frequency": 20000,
                         "eval_steps": 3000,
                         "gamma": 0.99,
-                        "human_flag": True,
+                        "human_flag": False,
                         "max_episode_steps": 300,
-                        "max_steps": 1000000,
+                        "max_steps": 1e06,
                         "tau": 1e-3,
                         "update_every": 1
                     }
@@ -405,7 +405,7 @@ class Configuration:
                         "eval_frequency": 10200,
                         "eval_steps": 2100,
                         "gamma": 0.99,
-                        "human_flag": True,
+                        "human_flag": False,
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
