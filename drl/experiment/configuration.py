@@ -521,7 +521,7 @@ class Configuration:
                 },
                 {
                     'id': 'reacher-multiple-linux',
-                    'gym_id': 'env/unity/linux/reacher-multiple-agent-novis',
+                    'gym_id': 'env/unity/linux/reacher-multiple-agent-novis/Reacher.x86_64',
                     "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
@@ -580,7 +580,7 @@ class Configuration:
                 },
                 {
                     'id': 'reacher-linux',
-                    'gym_id': 'env/unity/linux/reacher-single-agent-novis',
+                    'gym_id': 'env/unity/linux/reacher-single-agent-novis/Reacher.x86_64',
                     "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
