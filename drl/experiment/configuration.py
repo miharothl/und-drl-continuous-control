@@ -521,7 +521,7 @@ class Configuration:
                 },
                 {
                     'id': 'reacher-multiple-linux',
-                    'gym_id': 'env/unity/mac/reacher-multiple-agent-novis.app',
+                    'gym_id': 'env/unity/linux/reacher-multiple-agent-novis.app',
                     "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
