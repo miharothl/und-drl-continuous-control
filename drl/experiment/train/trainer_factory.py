@@ -1,5 +1,5 @@
 from drl.experiment.configuration import Configuration
-from drl.experiment.train.dqn_trainer import MasterTrainer
+from drl.experiment.train.master_trainer import MasterTrainer
 from drl.experiment.train.i_trainer import ITrainer
 
 

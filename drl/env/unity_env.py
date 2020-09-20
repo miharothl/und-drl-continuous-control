@@ -9,16 +9,16 @@ from drl.env.i_environment import IEnvironment
 class UnityEnv(IEnvironment):
 
     def __init__(self, name):
-        self.__env = UnityEnvironment(file_name=name)
-        self.__brain_name = self.__env.brain_names[0]
-        self.__termination_reward = 0
+        self.env = UnityEnvironment(file_name=name)
+        self.brain_name = self.env.brain_names[0]
+        self.termination_reward = 0
         # env = UnityEnvironment(file_name="Banana_Linux_NoVis/Banana.x86_64")
 
     def action_offset(self):
         return 0
 
     def close(self):
-        self.__env.close()
+        self.env.close()
 
     def get_action_space(self):
         # isDiscrete = isinstance(self.__env.action_space, Discrete)
@@ -35,10 +35,10 @@ class UnityEnv(IEnvironment):
         pass
 
     def reset(self):
-        brain_name = self.__env.brain_names[0]
+        brain_name = self.env.brain_names[0]
         # brain = self.__env.brains[brain_name]
 
-        env_info = self.__env.reset(train_mode=True)[brain_name]  # reset the environment
+        env_info = self.env.reset(train_mode=True)[brain_name]  # reset the environment
         state = env_info.vector_observations[0]  # get the current state
         # state = env_info.vector_observations  # get the current state
 
@@ -50,7 +50,7 @@ class UnityEnv(IEnvironment):
         return None
 
     def step(self, action):
-        env_info = self.__env.step(action)[self.__brain_name]  # send the action to the environment
+        env_info = self.env.step(action)[self.brain_name]  # send the action to the environment
 
         next_state = env_info.vector_observations[0]  # get the next state
         reward = env_info.rewards[0]  # get the reward
@@ -60,7 +60,7 @@ class UnityEnv(IEnvironment):
         # done = env_info.local_done  # see if episode has finished
 
         if done:
-            reward += self.__termination_reward
+            reward += self.termination_reward
 
         new_life = False
 

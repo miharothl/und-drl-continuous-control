@@ -23,7 +23,7 @@ class TestConfig:
             num_frames=1,
         )
 
-        environment_cfg = EnvironmentConfig(env_type='gym')
+        environment_cfg = EnvironmentConfig(env_type='gym', num_agents=1)
 
         trainer_cfg = TrainerConfig(
             max_steps=1000000,
@@ -120,7 +120,8 @@ class TestConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                         "id": "exp_id_1",
                         "gym_id": "gym_exp_id_1",
@@ -180,7 +181,8 @@ class TestConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                         "id": "exp_id_1",
                         "gym_id": "gym_exp_id_1",

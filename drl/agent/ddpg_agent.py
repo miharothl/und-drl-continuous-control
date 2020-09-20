@@ -28,8 +28,11 @@ class DdpgAgent():
             random_seed (int): random seed
         """
 
+        self.num_agents = cfg.get_current_exp_cfg().environment_cfg.num_agents
+
         rl_cfg = cfg.get_current_exp_cfg().reinforcement_learning_cfg
-        self.trainer_cfg = cfg.get_current_exp_cfg().trainer_cfg
+
+        self.trainer_cfg  = cfg.get_current_exp_cfg().trainer_cfg
         self.replay_memory_cfg = cfg.get_current_exp_cfg().replay_memory_cfg
 
         self.BUFFER_SIZE = self.replay_memory_cfg.buffer_size
@@ -76,7 +79,12 @@ class DdpgAgent():
     def step(self, state, action, reward, next_state, done):
         """Save experience in replay memory, and use random sample from buffer to learn."""
         # Save experience / reward
-        self.memory.add(state, action, reward, next_state, done)
+
+        if self.num_agents == 1:
+            self.memory.add(state, action, reward, next_state, done)
+        else:
+            for i in range(self.num_agents):
+                self.memory.add(state[i], action[i], reward[i], next_state[i], done[i])
 
         # Learn every UPDATE_EVERY time steps.
         self.step_update_counter = (self.step_update_counter + 1) % self.trainer_cfg.update_every
@@ -85,22 +93,23 @@ class DdpgAgent():
             # Learn, if enough samples are available in memory
             if len(self.memory) > self.BATCH_SIZE:
 
-                # RM
-                # experiences = self.memory.sample()
-                # self.learn(experiences, self.GAMMA)
+                for _ in range(self.trainer_cfg.num_updates):
+                    # RM
+                    # experiences = self.memory.sample()
+                    # self.learn(experiences, self.GAMMA)
 
-                if self.replay_memory_cfg.prioritized_replay:
-                    raise Exception('Prioritized replay is not supported.')
-                else:
-                    experiences = self.memory.sample(self.trainer_cfg.batch_size)
-                    obses_t, actions, rewards, obses_tp1, dones = experiences
-                    weights, batch_idxes = np.ones_like(rewards), None
-                    exp = (obses_t, actions, rewards, obses_tp1, dones, weights)
+                    if self.replay_memory_cfg.prioritized_replay:
+                        raise Exception('Prioritized replay is not supported.')
+                    else:
+                        experiences = self.memory.sample(self.trainer_cfg.batch_size)
+                        obses_t, actions, rewards, obses_tp1, dones = experiences
+                        weights, batch_idxes = np.ones_like(rewards), None
+                        exp = (obses_t, actions, rewards, obses_tp1, dones, weights)
 
-                pos_reward_ratio, neg_reward_ratio, loss, td_error = self.learn(exp, self.trainer_cfg.gamma)
+                    pos_reward_ratio, neg_reward_ratio, loss, td_error = self.learn(exp, self.trainer_cfg.gamma)
 
-                if self.replay_memory_cfg.prioritized_replay:
-                    raise Exception('Prioritized replay is not supported.')
+                    if self.replay_memory_cfg.prioritized_replay:
+                        raise Exception('Prioritized replay is not supported.')
 
         return 0, 0, 0, 0
 
@@ -112,8 +121,12 @@ class DdpgAgent():
             action = self.actor_local(state).cpu().data.numpy()
         self.actor_local.train()
         if add_noise:
-            action += self.noise.sample() * self.eps
-            self.eps= self.eps * 0.999995
+            if self.num_agents == 1:
+                action += self.noise.sample() * self.eps
+            else:
+                action += [self.noise.sample() * self.eps for _ in range(self.num_agents)]
+
+            self.eps = self.eps * 0.999995
         return np.clip(action, -1, 1)
 
     def reset(self):
@@ -132,7 +145,6 @@ class DdpgAgent():
             gamma (float): discount factor
         """
         states, actions, rewards, next_states, dones, weights = experiences
-
 
         # RM
         states = torch.from_numpy(states).float().to(device)

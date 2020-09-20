@@ -22,7 +22,8 @@ class TestEnvConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
@@ -72,7 +73,8 @@ class TestEnvConfig:
                             "state_size": 128
                         },
                         "environment_cfg": {
-                            "env_type": "spaceinvaders_atari_gym"
+                            "env_type": "spaceinvaders_atari_gym",
+                            "num_agents": 1
                         },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
@@ -122,7 +124,8 @@ class TestEnvConfig:
                             "state_size": [80, 80]
                         },
                         "environment_cfg": {
-                            "env_type": "spaceinvaders_atari_gym"
+                            "env_type": "spaceinvaders_atari_gym",
+                            "num_agents": 1
                         },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
@@ -172,7 +175,8 @@ class TestEnvConfig:
                             "state_size": 37
                         },
                         "environment_cfg": {
-                            "env_type": "unity"
+                            "env_type": "unity",
+                            "num_agents": 1
                         },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_double",

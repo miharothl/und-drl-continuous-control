@@ -21,7 +21,8 @@ class TestAgentConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
@@ -71,7 +72,8 @@ class TestAgentConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
@@ -121,7 +123,8 @@ class TestAgentConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
@@ -171,7 +174,8 @@ class TestAgentConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_dueling",
@@ -221,7 +225,8 @@ class TestAgentConfig:
                             "state_size": 8
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_double",
@@ -272,7 +277,8 @@ class TestAgentConfig:
                             "state_size": 24
                         },
                         "environment_cfg": {
-                            "env_type": "gym"
+                            "env_type": "gym",
+                            "num_agents": 1
                         },
                         "reinforcement_learning_cfg": {
                             "algorithm_type": "ddpg",

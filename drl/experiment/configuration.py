@@ -82,7 +82,8 @@ class Configuration:
                         "state_size": 8
                     },
                     "environment_cfg": {
-                        "env_type": "gym"
+                        "env_type": "gym",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn",
@@ -132,7 +133,8 @@ class Configuration:
                         "state_size": 24
                     },
                     "environment_cfg": {
-                        "env_type": "gym"
+                        "env_type": "gym",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
@@ -190,7 +192,8 @@ class Configuration:
                         "state_size": 3
                     },
                     "environment_cfg": {
-                        "env_type": "gym"
+                        "env_type": "gym",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
@@ -251,7 +254,8 @@ class Configuration:
                         "state_size": 128
                     },
                     "environment_cfg": {
-                        "env_type": "spaceinvaders_atari_gym"
+                        "env_type": "spaceinvaders_atari_gym",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_dueling",
@@ -302,7 +306,8 @@ class Configuration:
                         "state_size": [80, 80]
                     },
                     "environment_cfg": {
-                        "env_type": "spaceinvaders_atari_gym"
+                        "env_type": "spaceinvaders_atari_gym",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn",
@@ -356,7 +361,8 @@ class Configuration:
                         "state_size": 37
                     },
                     "environment_cfg": {
-                        "env_type": "unity"
+                        "env_type": "unity",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_double",
@@ -406,7 +412,8 @@ class Configuration:
                         "state_size": 33
                     },
                     "environment_cfg": {
-                        "env_type": "unity"
+                        "env_type": "unity",
+                        "num_agents": 1
                     },
                     "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
@@ -464,7 +471,8 @@ class Configuration:
                         "state_size": 33
                     },
                     "environment_cfg": {
-                        "env_type": "unity"
+                        "env_type": "unity-multiple",
+                        "num_agents": 20
                     },
                     "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
@@ -506,8 +514,8 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
-                        "update_every": 4,
-                        "num_updates": 1,
+                        "update_every": 20,
+                        "num_updates": 10,
                         "num_agents": 1
                     }
                 },
@@ -522,7 +530,8 @@ class Configuration:
                         "state_size": 33
                     },
                     "environment_cfg": {
-                        "env_type": "unity"
+                        "env_type": "unity",
+                        "num_agents": 1
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",

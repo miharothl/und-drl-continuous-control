@@ -17,6 +17,7 @@ class MasterTrainer(Trainer):
 
         super(MasterTrainer, self).__init__(cfg, session_id)
 
+
         if cfg.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type.startswith('ddpg'):
             self.use_epsilon = False
         else:
@@ -35,6 +36,7 @@ class MasterTrainer(Trainer):
         """
 
         trainer_cfg = self.cfg.get_current_exp_cfg().trainer_cfg
+
         reinforcement_learning_cfg = self.cfg.get_current_exp_cfg().reinforcement_learning_cfg
 
         scores_window = deque(maxlen=100)  # last 100 scores
@@ -90,6 +92,8 @@ class MasterTrainer(Trainer):
             terminal = True
             epoch_episode = 0
 
+            episode_score = np.zeros(self.cfg.get_current_exp_cfg().environment_cfg.num_agents)
+
             while (epoch_step < trainer_cfg.eval_frequency) and (step < trainer_cfg.max_steps):
 
                 for episode_step in range(trainer_cfg.max_episode_steps):
@@ -140,10 +144,17 @@ class MasterTrainer(Trainer):
                     epoch_step += 1
 
                     state = next_state
-                    score += reward
 
-                    if done:
-                        break
+                    episode_score += reward
+
+                    if self.cfg.get_current_exp_cfg().environment_cfg.num_agents == 1:
+                        if done:
+                            break
+                    else:
+                        if np.any(done):
+                            break
+
+                    score = episode_score.mean(axis=0)
 
                     logging.debug(
                         'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
@@ -205,6 +216,7 @@ class MasterTrainer(Trainer):
                         state, new_life = env.reset()
                         state = agent.pre_process(state)
                         score = 0
+                        episode_score = np.zeros(self.cfg.get_current_exp_cfg().environment_cfg.num_agents)
                         epoch_val_episode += 1
 
                     action = agent.act(state, eps)
@@ -225,10 +237,17 @@ class MasterTrainer(Trainer):
                     val_step += 1
 
                     state = next_state
-                    score += reward
 
-                    if done:
-                        break
+                    episode_score += reward
+
+                    if self.cfg.get_current_exp_cfg().environment_cfg.num_agents == 1:
+                        if done:
+                            break
+                    else:
+                        if np.any(done):
+                            break
+
+                    score = episode_score.mean(axis=0)
 
                     logging.debug(
                         'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
