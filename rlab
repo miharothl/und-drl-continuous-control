@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 import argparse
 
-from drl import logging
 from drl.experiment.analyser import Analyzer
 from drl.experiment.configuration import Configuration
 from drl.experiment.experiment import Experiment
 from drl.experiment.explorer import Explorer
 from drl.logging import init_logging, set_logging_level, transform_verbose_count_to_logging_level
+
 import logging
 import logging.config
+
 
 def parse_arguments(params):
     ap = argparse.ArgumentParser(description="Reinforcement Learning Lab",

@@ -40,6 +40,7 @@ class UnityEnv(IEnvironment):
 
         env_info = self.__env.reset(train_mode=True)[brain_name]  # reset the environment
         state = env_info.vector_observations[0]  # get the current state
+        # state = env_info.vector_observations  # get the current state
 
         new_life = True
 
@@ -54,6 +55,9 @@ class UnityEnv(IEnvironment):
         next_state = env_info.vector_observations[0]  # get the next state
         reward = env_info.rewards[0]  # get the reward
         done = env_info.local_done[0]  # see if episode has finished
+        # next_state = env_info.vector_observations  # get the next state
+        # reward = env_info.rewards  # get the reward
+        # done = env_info.local_done  # see if episode has finished
 
         if done:
             reward += self.__termination_reward

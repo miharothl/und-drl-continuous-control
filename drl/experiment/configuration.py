@@ -160,7 +160,7 @@ class Configuration:
                     },
                     "replay_memory_cfg": {
                         "buffer_size": 1e05,
-                        "prioritized_replay": True,
+                        "prioritized_replay": False,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
                         "prioritized_replay_eps": 1e-06
@@ -218,7 +218,7 @@ class Configuration:
                     },
                     "replay_memory_cfg": {
                         "buffer_size": 1e06,
-                        "prioritized_replay": True,
+                        "prioritized_replay": False,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
                         "prioritized_replay_eps": 1e-06
@@ -353,10 +353,10 @@ class Configuration:
                         "discrete": True,
                         "num_frames": 1,
                         "state_rgb": False,
-                        "state_size": 8
+                        "state_size": 37
                     },
                     "environment_cfg": {
-                        "env_type": "gym"
+                        "env_type": "unity"
                     },
                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_double",
@@ -408,7 +408,7 @@ class Configuration:
                     "environment_cfg": {
                         "env_type": "unity"
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
@@ -434,7 +434,65 @@ class Configuration:
                     },
                     "replay_memory_cfg": {
                         "buffer_size": 100000,
-                        "prioritized_replay": True,
+                        "prioritized_replay": False,
+                        "prioritized_replay_alpha": 0.6,
+                        "prioritized_replay_beta0": 0.4,
+                        "prioritized_replay_eps": 1e-06
+                    },
+                    "trainer_cfg": {
+                        "batch_size": 128,
+                        "eval_frequency": 10000,
+                        "eval_steps": 2100,
+                        "gamma": 0.99,
+                        "human_flag": False,
+                        "max_episode_steps": 1000,
+                        "max_steps": 600000,
+                        "tau": 0.001,
+                        "update_every": 4,
+                        "num_updates": 1,
+                        "num_agents": 1
+                    }
+                },
+                {
+                    'id': 'reacher-multiple',
+                    'gym_id': 'env/unity/mac/reacher-multiple-agent.app',
+                    "agent_cfg": {
+                        "action_size": 4,
+                        "discrete": True,
+                        "num_frames": 1,
+                        "state_rgb": False,
+                        "state_size": 33
+                    },
+                    "environment_cfg": {
+                        "env_type": "unity"
+                    },
+                    "reinforcement_learning_cfg": {
+                        "algorithm_type": "ddpg",
+                        "dqn_cfg": None,
+                        "ddpg_cfg": {
+                            "epsilon_start": 1.0,
+                            "epsilon_end": 0.01,
+                            "epsilon_decay": 0.995,
+                            "lr_actor": 1e-04,
+                            "lr_critic": 1e-03,
+                            "weight_decay":  0,
+                            "actor_model_cfg": {
+                                "hidden_layers": [
+                                    64,
+                                    64
+                                ]
+                            },
+                            "critic_model_cfg": {
+                                "hidden_layers": [
+                                    128,
+                                    128
+                                ]
+                            },
+                        }
+                    },
+                    "replay_memory_cfg": {
+                        "buffer_size": 100000,
+                        "prioritized_replay": False,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
                         "prioritized_replay_eps": 1e-06
@@ -492,7 +550,7 @@ class Configuration:
                     },
                     "replay_memory_cfg": {
                         "buffer_size": 100000,
-                        "prioritized_replay": True,
+                        "prioritized_replay": False,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
                         "prioritized_replay_eps": 1e-06

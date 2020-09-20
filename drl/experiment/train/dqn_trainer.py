@@ -34,7 +34,7 @@ class MasterTrainer(Trainer):
             eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
         """
 
-        trainer_cfg: TrainerConfig = self.cfg.get_current_exp_cfg().trainer_cfg
+        trainer_cfg = self.cfg.get_current_exp_cfg().trainer_cfg
         reinforcement_learning_cfg = self.cfg.get_current_exp_cfg().reinforcement_learning_cfg
 
         scores_window = deque(maxlen=100)  # last 100 scores
