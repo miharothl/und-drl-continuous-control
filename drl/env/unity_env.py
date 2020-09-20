@@ -5,10 +5,15 @@ from unityagents import UnityEnvironment
 from drl import logging
 from drl.env.i_environment import IEnvironment
 
+import logging
+import logging.config
+
 
 class UnityEnv(IEnvironment):
 
     def __init__(self, name):
+        logging.critical(name)
+
         self.env = UnityEnvironment(file_name=name)
         self.brain_name = self.env.brain_names[0]
         self.termination_reward = 0
