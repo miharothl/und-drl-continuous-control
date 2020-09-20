@@ -580,7 +580,7 @@ class Configuration:
                 },
                 {
                     'id': 'reacher-linux',
-                    'gym_id': 'env/unity/mac/reacher-single-agent-novis',
+                    'gym_id': 'env/unity/linux/reacher-single-agent-novis',
                     "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
