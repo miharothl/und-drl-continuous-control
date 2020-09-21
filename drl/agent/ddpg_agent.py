@@ -48,13 +48,13 @@ class DdpgAgent():
         self.seed = random.seed(seed)
 
         # Actor Network (w/ Target Network)
-        self.actor_local = Actor3(self.state_size, self.action_size, seed).to(device)
-        self.actor_target = Actor3(self.state_size, self.action_size, seed).to(device)
+        self.actor_local = ActorPendulum(self.state_size, self.action_size, seed, fc1_units=256, fc2_units=128).to(device)
+        self.actor_target = ActorPendulum(self.state_size, self.action_size, seed, fc1_units=256, fc2_units=128).to(device)
         self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=self.LR_ACTOR)
 
         # Critic Network (w/ Target Network)
-        self.critic_local = Critic3(self.state_size, self.action_size, seed).to(device)
-        self.critic_target = Critic3(self.state_size, self.action_size, seed).to(device)
+        self.critic_local = CriticPendulum(self.state_size, self.action_size, seed, fcs1_units=256, fc2_units=128).to(device)
+        self.critic_target = CriticPendulum(self.state_size, self.action_size, seed, fcs1_units=256, fc2_units=128).to(device)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=self.LR_CRITIC, weight_decay=self.WEIGHT_DECAY)
 
         # Noise process

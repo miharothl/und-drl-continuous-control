@@ -463,7 +463,7 @@ class Configuration:
                 {
                     'id': 'reacher-multiple',
                     'gym_id': 'env/unity/mac/reacher-multiple-agent.app',
-                    "agent_cfg": {
+                                        "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
                         "num_frames": 1,
@@ -479,8 +479,8 @@ class Configuration:
                         "dqn_cfg": None,
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
-                            "epsilon_end": 0.01,
-                            "epsilon_decay": 0.995,
+                            "epsilon_end": 0.1,
+                            "epsilon_decay": 0.95,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
@@ -506,9 +506,9 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 1024,
-                        "eval_frequency": 15000,
-                        "eval_steps": 3000,
+                        "batch_size": 256,
+                        "eval_frequency": 10000,
+                        "eval_steps": 1000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
@@ -538,8 +538,8 @@ class Configuration:
                         "dqn_cfg": None,
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
-                            "epsilon_end": 0.01,
-                            "epsilon_decay": 0.995,
+                            "epsilon_end": 0.1,
+                            "epsilon_decay": 0.95,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
@@ -565,9 +565,9 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 1024,
-                        "eval_frequency": 15000,
-                        "eval_steps": 3000,
+                        "batch_size": 256,
+                        "eval_frequency": 10000,
+                        "eval_steps": 1000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
