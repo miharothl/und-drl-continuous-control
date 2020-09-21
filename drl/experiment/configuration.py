@@ -455,7 +455,7 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 300000,
                         "tau": 0.001,
-                        "update_every": 4,
+                        "update_every": 1,
                         "num_updates": 1,
                         "num_agents": 1
                     }

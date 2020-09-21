@@ -20,6 +20,8 @@ class DdpgTrainer(Trainer):
         # n_episodes = 2000
         # max_t = 700
 
+        eps = 1.0
+
         n_episodes = trainer_cfg.max_steps
         max_t = trainer_cfg.max_episode_steps
 
@@ -32,7 +34,7 @@ class DdpgTrainer(Trainer):
             agent.reset()
             score = 0
             for t in range(max_t):
-                action = agent.act(state)
+                action = agent.act(state, eps)
                 # next_state, reward, done, _ = env.step(action)
                 next_state, reward, done, new_life = env.step(action)
 
