@@ -266,7 +266,7 @@ class MasterTrainer(Trainer):
                                                                                        self.eps))
 
             epoch_recorder.record(
-                [epoch, np.mean(scores_window), np.mean(val_scores_window), eps, np.mean(loss_window), beta])
+                [epoch, np.mean(scores_window), np.mean(val_scores_window), self.eps, np.mean(loss_window), beta])
             epoch_recorder.save()
 
             models = agent.get_models()
