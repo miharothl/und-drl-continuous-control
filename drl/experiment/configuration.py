@@ -468,7 +468,7 @@ class Configuration:
                         "discrete": True,
                         "num_frames": 1,
                         "state_rgb": False,
-                        "state_size": 33
+                        "state_size": 3
                     },
                     "environment_cfg": {
                         "env_type": "unity-multiple",
@@ -480,7 +480,7 @@ class Configuration:
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
-                            "epsilon_decay": 0.95,
+                            "epsilon_decay": 0.998,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
@@ -506,7 +506,7 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 256,
+                        "batch_size": 128,
                         "eval_frequency": 10000,
                         "eval_steps": 1000,
                         "gamma": 0.99,
@@ -539,7 +539,7 @@ class Configuration:
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
-                            "epsilon_decay": 0.95,
+                            "epsilon_decay": 0.998,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
@@ -565,7 +565,7 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 256,
+                        "batch_size": 128,
                         "eval_frequency": 10000,
                         "eval_steps": 1000,
                         "gamma": 0.99,
