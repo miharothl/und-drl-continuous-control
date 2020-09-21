@@ -60,8 +60,6 @@ class DdpgAgent():
         # Noise process
         self.noise = OUNoise(self.action_size, seed)
 
-        self.eps=1
-
         # RM
         # Replay memory
         # self.memory = ReplayBuffer(self.action_size, self.BUFFER_SIZE, self.BATCH_SIZE, seed)

@@ -272,7 +272,7 @@ class MasterTrainer(Trainer):
             models = agent.get_models()
 
             for model in models:
-                model_filename = self.get_model_filename(model.name, epoch, np.mean(scores_window), np.mean(val_scores_window), eps)
+                model_filename = self.get_model_filename(model.name, epoch, np.mean(scores_window), np.mean(val_scores_window), self.eps)
                 torch.save(model.weights.state_dict(), model_filename)
 
             epoch += 1
