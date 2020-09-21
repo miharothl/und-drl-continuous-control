@@ -453,7 +453,7 @@ class Configuration:
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
-                        "max_steps": 600000,
+                        "max_steps": 300000,
                         "tau": 0.001,
                         "update_every": 4,
                         "num_updates": 1,
@@ -482,7 +482,7 @@ class Configuration:
                             "epsilon_end": 0.01,
                             "epsilon_decay": 0.995,
                             "lr_actor": 1e-04,
-                            "lr_critic": 1e-03,
+                            "lr_critic": 3e-04,
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
@@ -506,9 +506,9 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 128,
-                        "eval_frequency": 10000,
-                        "eval_steps": 2100,
+                        "batch_size": 1024,
+                        "eval_frequency": 15000,
+                        "eval_steps": 3000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
@@ -541,7 +541,7 @@ class Configuration:
                             "epsilon_end": 0.01,
                             "epsilon_decay": 0.995,
                             "lr_actor": 1e-04,
-                            "lr_critic": 1e-03,
+                            "lr_critic": 3e-04,
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
@@ -565,9 +565,9 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 128,
-                        "eval_frequency": 10000,
-                        "eval_steps": 2100,
+                        "batch_size": 1024,
+                        "eval_frequency": 15000,
+                        "eval_steps": 3000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
