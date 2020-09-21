@@ -468,7 +468,7 @@ class Configuration:
                         "discrete": True,
                         "num_frames": 1,
                         "state_rgb": False,
-                        "state_size": 3
+                        "state_size": 33
                     },
                     "environment_cfg": {
                         "env_type": "unity-multiple",
@@ -514,8 +514,8 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
-                        "update_every": 20,
-                        "num_updates": 10,
+                        "update_every": 10,
+                        "num_updates": 20,
                         "num_agents": 1
                     }
                 },
@@ -573,8 +573,8 @@ class Configuration:
                         "max_episode_steps": 1000,
                         "max_steps": 600000,
                         "tau": 0.001,
-                        "update_every": 20,
-                        "num_updates": 10,
+                        "update_every": 10,
+                        "num_updates": 20,
                         "num_agents": 1
                     }
                 },
