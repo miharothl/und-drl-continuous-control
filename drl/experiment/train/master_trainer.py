@@ -18,10 +18,16 @@ class MasterTrainer(Trainer):
         super(MasterTrainer, self).__init__(cfg, session_id)
 
 
+        reinforcement_learning_cfg = self.cfg.get_current_exp_cfg().reinforcement_learning_cfg
+
         if cfg.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type.startswith('ddpg'):
-            self.use_epsilon = False
+            self.eps = reinforcement_learning_cfg.ddpg_cfg.epsilon_start   # initialize epsilon
+            self.eps_end = reinforcement_learning_cfg.ddpg_cfg.epsilon_end
+            self.eps_decay = reinforcement_learning_cfg.ddpg_cfg.epsilon_decay
         else:
-            self.use_epsilon = True
+            self.eps = reinforcement_learning_cfg.dqn_cfg.epsilon_start   # initialize epsilon
+            self.eps_end = reinforcement_learning_cfg.dqn_cfg.epsilon_end
+            self.eps_decay = reinforcement_learning_cfg.dqn_cfg.epsilon_decay
 
     def train(self, agent: IAgent, env: IEnvironment, model_filename=None):
         """Deep Q-Learning.
@@ -41,11 +47,6 @@ class MasterTrainer(Trainer):
 
         scores_window = deque(maxlen=100)  # last 100 scores
 
-        if self.use_epsilon is True:
-            eps = reinforcement_learning_cfg.dqn_cfg.epsilon_start   # initialize epsilon
-        else:
-            eps = -1
-
         loss_window = deque(maxlen=100)
         pos_reward_ratio_window = deque(maxlen=100)
         neg_reward_ratio_window = deque(maxlen=100)
@@ -55,7 +56,7 @@ class MasterTrainer(Trainer):
             filename = self.select_model_filename(model_filename=model_filename)
             agent.current_model.load_state_dict(torch.load(filename, map_location=lambda storage, loc: storage))
             agent.target_model.load_state_dict(torch.load(filename, map_location=lambda storage, loc: storage))
-            eps = 0.78
+            self.eps = 0.78
 
         epoch_recorder = Recorder(
             header=['epoch', 'avg_score', 'avg_val_score', 'epsilon', 'avg_loss', 'beta'],
@@ -92,8 +93,6 @@ class MasterTrainer(Trainer):
             terminal = True
             epoch_episode = 0
 
-            episode_score = np.zeros(self.cfg.get_current_exp_cfg().environment_cfg.num_agents)
-
             while (epoch_step < trainer_cfg.eval_frequency) and (step < trainer_cfg.max_steps):
 
                 for episode_step in range(trainer_cfg.max_episode_steps):
@@ -111,12 +110,11 @@ class MasterTrainer(Trainer):
                         state = agent.pre_process(state)
 
                         score = 0
+                        episode_score = np.zeros(self.cfg.get_current_exp_cfg().environment_cfg.num_agents)
+
                         epoch_episode += 1
 
-                    if self.use_epsilon is True:
-                        action = agent.act(state, eps)
-                    else:
-                        action = agent.act(state)
+                    action = agent.act(state, self.eps)
 
                     if new_life:
                         start_game_action = env.start_game_action()
@@ -159,20 +157,20 @@ class MasterTrainer(Trainer):
                     logging.debug(
                         'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
                         '\tEpsilon: {:.2f}\tAvg Pos Reward Ratio: {:.3f}\tAvg Neg Reward Ratio: {:.3f}\tLoss {:.6f}'
-                            .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, eps,
+                            .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps,
                                     np.mean(pos_reward_ratio_window) if len(pos_reward_ratio_window) > 0 else 0,
                                     np.mean(neg_reward_ratio_window) if len(neg_reward_ratio_window) > 0 else 0,
                                     np.mean(loss_window) if len(loss_window) > 0 else 0))
                 logging.warning(
                     'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
                     '\tEpsilon: {:.2f}\tAvg Pos Reward Ratio: {:.3f}\tAvg Neg Reward Ratio: {:.3f}\tLoss {:.6f}'
-                        .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, eps,
+                        .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps,
                                 np.mean(pos_reward_ratio_window) if len(pos_reward_ratio_window) > 0 else 0,
                                 np.mean(neg_reward_ratio_window) if len(neg_reward_ratio_window) > 0 else 0,
                                 np.mean(loss_window) if len(loss_window) > 0 else 0))
 
                 episode_recorder.record(
-                    [step, episode, epoch, epoch_step, epoch_episode, episode_step, score, eps, beta,
+                    [step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps, beta,
                      np.mean(pos_reward_ratio_window) if len(pos_reward_ratio_window) > 0 else 0,
                      np.mean(neg_reward_ratio_window) if len(neg_reward_ratio_window) > 0 else 0,
                      np.mean(loss_window) if len(loss_window) > 0 else 0])
@@ -182,9 +180,7 @@ class MasterTrainer(Trainer):
                 if step <= trainer_cfg.max_steps:
                     scores_window.append(score)  # save most recent score
 
-                if self.use_epsilon is True:
-                    eps = max(reinforcement_learning_cfg.dqn_cfg.epsilon_end,
-                              reinforcement_learning_cfg.dqn_cfg.epsilon_decay * eps)  # decrease epsilon
+                self.eps = max(self.eps_end, self.eps_decay * self.eps)  # decrease epsilon
 
                 # sys.stdout.flush()
 
@@ -219,7 +215,7 @@ class MasterTrainer(Trainer):
                         episode_score = np.zeros(self.cfg.get_current_exp_cfg().environment_cfg.num_agents)
                         epoch_val_episode += 1
 
-                    action = agent.act(state, eps)
+                    action = agent.act(state, epsilon=0)
 
                     if new_life:
                         start_game_action = env.start_game_action()
@@ -251,11 +247,11 @@ class MasterTrainer(Trainer):
 
                     logging.debug(
                         'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
-                            .format(epoch, val_step, epoch_val_episode, episode_val_step, score, eps))
+                            .format(epoch, val_step, epoch_val_episode, episode_val_step, score, self.eps))
 
                 logging.warning(
                     'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
-                        .format(epoch, val_step, epoch_val_episode, episode_val_step, score, eps))
+                        .format(epoch, val_step, epoch_val_episode, episode_val_step, score, self.eps))
 
                 if val_step < trainer_cfg.eval_steps:
                     val_scores_window.append(score)  # save most recent score
@@ -267,7 +263,7 @@ class MasterTrainer(Trainer):
             logging.critical(
                 'Epoch {}\t Score: {:.2f}\t Val Score: {:.2f}\tEpsilon: {:.2f}'.format(epoch, np.mean(scores_window),
                                                                                        np.mean(val_scores_window),
-                                                                                       eps))
+                                                                                       self.eps))
 
             epoch_recorder.record(
                 [epoch, np.mean(scores_window), np.mean(val_scores_window), eps, np.mean(loss_window), beta])

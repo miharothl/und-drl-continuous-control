@@ -113,7 +113,7 @@ class DdpgAgent():
 
         return 0, 0, 0, 0
 
-    def act(self, state, add_noise=True):
+    def act(self, state, epsilon, add_noise=True):
         """Returns actions for given state as per current policy."""
         state = torch.from_numpy(state).float().to(device)
         self.actor_local.eval()
@@ -122,11 +122,10 @@ class DdpgAgent():
         self.actor_local.train()
         if add_noise:
             if self.num_agents == 1:
-                action += self.noise.sample() * self.eps
+                action += self.noise.sample() * epsilon
             else:
-                action += [self.noise.sample() * self.eps for _ in range(self.num_agents)]
+                action += [self.noise.sample() * epsilon for _ in range(self.num_agents)]
 
-            self.eps = self.eps * 0.999995
         return np.clip(action, -1, 1)
 
     def reset(self):
