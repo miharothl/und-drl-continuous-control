@@ -17,7 +17,6 @@ class MasterTrainer(Trainer):
 
         super(MasterTrainer, self).__init__(cfg, session_id)
 
-
         reinforcement_learning_cfg = self.cfg.get_current_exp_cfg().reinforcement_learning_cfg
 
         if cfg.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type.startswith('ddpg'):
@@ -215,7 +214,7 @@ class MasterTrainer(Trainer):
                         episode_score = np.zeros(self.cfg.get_current_exp_cfg().environment_cfg.num_agents)
                         epoch_val_episode += 1
 
-                    action = agent.act(state, epsilon=0)
+                    action = agent.act(state, eps=0)
 
                     if new_life:
                         start_game_action = env.start_game_action()
