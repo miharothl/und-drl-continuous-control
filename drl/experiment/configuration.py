@@ -456,7 +456,7 @@ class Configuration:
                 {
                     'id': 'reacher-multiple',
                     'gym_id': 'env/unity/mac/reacher-multiple-agent.app',
-                                        "agent_cfg": {
+                    "agent_cfg": {
                         "action_size": 4,
                         "discrete": True,
                         "num_frames": 1,
@@ -473,7 +473,7 @@ class Configuration:
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
-                            "epsilon_decay": 0.998,
+                            "epsilon_decay": 0.97,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
@@ -505,7 +505,7 @@ class Configuration:
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
-                        "max_steps": 600000,
+                        "max_steps": 300000,
                         "tau": 0.001,
                         "update_every": 10,
                         "num_updates": 20
@@ -531,19 +531,19 @@ class Configuration:
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
-                            "epsilon_decay": 0.998,
+                            "epsilon_decay": 0.97,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
-                                    64,
-                                    64
+                                    256,
+                                    128
                                 ]
                             },
                             "critic_model_cfg": {
                                 "hidden_layers": [
-                                    128,
+                                    256,
                                     128
                                 ]
                             },
@@ -563,7 +563,7 @@ class Configuration:
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
-                        "max_steps": 600000,
+                        "max_steps": 300000,
                         "tau": 0.001,
                         "update_every": 10,
                         "num_updates": 20

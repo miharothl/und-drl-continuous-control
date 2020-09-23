@@ -107,8 +107,6 @@ def main():
                     num_episodes=args.play_episodes
                 )
 
-        # env.close()
-
     except Exception as e:
 
         drl_logger.exception(
