@@ -58,8 +58,7 @@ class TestEnvConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -109,8 +108,7 @@ class TestEnvConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -160,8 +158,7 @@ class TestEnvConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -211,8 +208,7 @@ class TestEnvConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                 ]

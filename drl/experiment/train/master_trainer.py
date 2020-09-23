@@ -1,3 +1,5 @@
+import time
+
 import torch
 import numpy as np
 from collections import deque
@@ -92,9 +94,16 @@ class MasterTrainer(Trainer):
             terminal = True
             epoch_episode = 0
 
+            epoch_start_time = time.time()
+
+
             while (epoch_step < trainer_cfg.eval_frequency) and (step < trainer_cfg.max_steps):
 
+                episode_start_time = time.time()
+
                 for episode_step in range(trainer_cfg.max_episode_steps):
+
+                    step_start_time = time.time()
 
                     if epoch_step >= trainer_cfg.eval_frequency:
                         break
@@ -154,19 +163,32 @@ class MasterTrainer(Trainer):
                     score = episode_score.mean(axis=0)
 
                     drl_logger.step(
-                        'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
-                        '\tEpsilon: {:.2f}\tAvg Pos Reward Ratio: {:.3f}\tAvg Neg Reward Ratio: {:.3f}\tLoss {:.6f}'
-                            .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps,
-                                    np.mean(pos_reward_ratio_window) if len(pos_reward_ratio_window) > 0 else 0,
-                                    np.mean(neg_reward_ratio_window) if len(neg_reward_ratio_window) > 0 else 0,
-                                    np.mean(loss_window) if len(loss_window) > 0 else 0))
+                        "Train.",
+                        extra={"params": {
+                            "step": step,
+                            "episode": episode,
+                            "epoch": epoch,
+                            "epoch_step": epoch_step,
+                            "epoch_episode": epoch_episode,
+                            "episode_step": episode_step,
+                            "score": "{:.3f}".format(score),
+                            "eps": "{:.3f}".format(self.eps),
+                            "elapsed": "{:.3f}s".format(time.time() - step_start_time),
+                        }})
+
                 drl_logger.episode(
-                    'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
-                    '\tEpsilon: {:.2f}\tAvg Pos Reward Ratio: {:.3f}\tAvg Neg Reward Ratio: {:.3f}\tLoss {:.6f}'
-                        .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps,
-                                np.mean(pos_reward_ratio_window) if len(pos_reward_ratio_window) > 0 else 0,
-                                np.mean(neg_reward_ratio_window) if len(neg_reward_ratio_window) > 0 else 0,
-                                np.mean(loss_window) if len(loss_window) > 0 else 0))
+                    "Train.",
+                    extra={"params": {
+                        "step": step,
+                        "episode": episode,
+                        "epoch": epoch,
+                        "epoch_step": epoch_step,
+                        "epoch_episode": epoch_episode,
+                        "episode_step": episode_step,
+                        "score": "{:.3f}".format(score),
+                        "eps": "{:.3f}".format(self.eps),
+                        "elapsed": "{:.0f}s".format(time.time() - episode_start_time),
+                    }})
 
                 episode_recorder.record(
                     [step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps, beta,
@@ -200,7 +222,11 @@ class MasterTrainer(Trainer):
 
             while val_step < trainer_cfg.eval_steps:
 
+                episode_start_time = time.time()
+
                 for episode_val_step in range(trainer_cfg.max_episode_steps):
+
+                    step_start_time = time.time()
 
                     if val_step >= trainer_cfg.eval_steps:
                         break
@@ -245,12 +271,28 @@ class MasterTrainer(Trainer):
                     score = episode_score.mean(axis=0)
 
                     drl_logger.step(
-                        'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
-                            .format(epoch, val_step, epoch_val_episode, episode_val_step, score, self.eps))
+                        "Validate.",
+                        extra={"params": {
+                            "epoch": epoch,
+                            "epoch_step": val_step,
+                            "epoch_episode": epoch_val_episode,
+                            "episode_step": episode_val_step,
+                            "score": "{:.3f}".format(score),
+                            "eps": "{:.3f}".format(self.eps),
+                            "elapsed": "{:.3f}s".format(time.time() - step_start_time),
+                        }})
 
                 drl_logger.episode(
-                    'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
-                        .format(epoch, val_step, epoch_val_episode, episode_val_step, score, self.eps))
+                    "Validate.",
+                    extra={"params": {
+                        "epoch": epoch,
+                        "epoch_step": val_step,
+                        "epoch_episode": epoch_val_episode,
+                        "episode_step": episode_val_step,
+                        "score": "{:.3f}".format(score),
+                        "eps": "{:.3f}".format(self.eps),
+                        "elapsed": "{:.0f}s".format(time.time() - episode_start_time),
+                    }})
 
                 if val_step < trainer_cfg.eval_steps:
                     val_scores_window.append(score)  # save most recent score
@@ -260,9 +302,14 @@ class MasterTrainer(Trainer):
                 terminal = True
 
             drl_logger.epoch(
-                'Epoch {}\t Score: {:.2f}\t Val Score: {:.2f}\tEpsilon: {:.2f}'.format(epoch, np.mean(scores_window),
-                                                                                       np.mean(val_scores_window),
-                                                                                       self.eps))
+                "Completed Epoch.",
+                extra={"params": {
+                    "epoch": epoch,
+                    "mean score": np.mean(scores_window),
+                    "mean val score": np.mean(val_scores_window),
+                    "eps": "{:.3f}".format(self.eps),
+                    "elapsed": "{:.0f}s".format(time.time() - epoch_start_time),
+                }})
 
             epoch_recorder.record(
                 [epoch, np.mean(scores_window), np.mean(val_scores_window), self.eps, np.mean(loss_window), beta])

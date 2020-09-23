@@ -85,7 +85,7 @@ class Configuration:
                         "env_type": "gym",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn",
                         "dqn_cfg": {
                             "epsilon_start": 1,
@@ -118,8 +118,7 @@ class Configuration:
                         "max_steps": 1000000,
                         "tau": 0.001,
                         "update_every": 4,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
                 {
@@ -136,7 +135,7 @@ class Configuration:
                         "env_type": "gym",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
@@ -177,8 +176,7 @@ class Configuration:
                         "max_steps": 1e06,
                         "tau": 1e-3,
                         "update_every": 1,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
                 {
@@ -195,7 +193,7 @@ class Configuration:
                         "env_type": "gym",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
@@ -236,8 +234,7 @@ class Configuration:
                         "max_steps": 1e06,
                         "tau": 1e-3,
                         "update_every": 1,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
                 ########################################################################################################
@@ -257,7 +254,7 @@ class Configuration:
                         "env_type": "spaceinvaders_atari_gym",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_dueling",
 
                         "dqn_cfg": {
@@ -291,8 +288,7 @@ class Configuration:
                         "max_steps": 50e6,
                         "tau": 0.001,
                         "update_every": 100,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
                 {
@@ -309,7 +305,7 @@ class Configuration:
                         "env_type": "spaceinvaders_atari_gym",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn",
                         "dqn_cfg": {
                             "epsilon_start": 1.0,
@@ -342,8 +338,7 @@ class Configuration:
                         "max_steps": 1000000,
                         "tau": 0.001,
                         "update_every": 4,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
 
@@ -364,7 +359,7 @@ class Configuration:
                         "env_type": "unity",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "dqn_double",
                         "dqn_cfg": {
                             "epsilon_start": 1,
@@ -397,8 +392,7 @@ class Configuration:
                         "max_steps": 600000,
                         "tau": 0.001,
                         "update_every": 4,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
                 {
@@ -456,8 +450,7 @@ class Configuration:
                         "max_steps": 300000,
                         "tau": 0.001,
                         "update_every": 1,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
                 {
@@ -515,8 +508,7 @@ class Configuration:
                         "max_steps": 600000,
                         "tau": 0.001,
                         "update_every": 10,
-                        "num_updates": 20,
-                        "num_agents": 1
+                        "num_updates": 20
                     }
                 },
                 {
@@ -574,8 +566,7 @@ class Configuration:
                         "max_steps": 600000,
                         "tau": 0.001,
                         "update_every": 10,
-                        "num_updates": 20,
-                        "num_agents": 1
+                        "num_updates": 20
                     }
                 },
                 {
@@ -592,7 +583,7 @@ class Configuration:
                         "env_type": "unity",
                         "num_agents": 1
                     },
-                   "reinforcement_learning_cfg": {
+                    "reinforcement_learning_cfg": {
                         "algorithm_type": "ddpg",
                         "dqn_cfg": None,
                         "ddpg_cfg": {
@@ -633,8 +624,7 @@ class Configuration:
                         "max_steps": 600000,
                         "tau": 0.001,
                         "update_every": 4,
-                        "num_updates": 1,
-                        "num_agents": 1
+                        "num_updates": 1
                     }
                 },
             ]

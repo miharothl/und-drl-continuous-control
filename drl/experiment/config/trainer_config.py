@@ -13,7 +13,6 @@ class TrainerConfig(ConfigBase):
                  num_updates,
                  tau,
                  gamma,
-                 num_agents,
                  ):
 
         self.ensure_betwen_0_and_1(tau)
@@ -29,4 +28,3 @@ class TrainerConfig(ConfigBase):
         self.num_updates = num_updates
         self.tau = tau
         self.gamma = gamma
-        self.num_agents = num_agents

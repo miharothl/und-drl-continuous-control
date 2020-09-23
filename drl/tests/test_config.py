@@ -35,8 +35,7 @@ class TestConfig:
             update_every=4,
             num_updates=1,
             tau=0.001,
-            gamma=0.99,
-            num_agents=1
+            gamma=0.99
         )
 
         neural_network_cfg = NeuralNetworkConfig(hidden_layers=[64, 64])
@@ -157,8 +156,7 @@ class TestConfig:
                             "max_steps": 1000000,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                 ]
@@ -224,8 +222,7 @@ class TestConfig:
                             "max_steps": 1000000,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                 ]

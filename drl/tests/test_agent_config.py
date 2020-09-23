@@ -24,7 +24,7 @@ class TestAgentConfig:
                             "env_type": "gym",
                             "num_agents": 1
                         },
-                       "reinforcement_learning_cfg": {
+                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
@@ -41,11 +41,11 @@ class TestAgentConfig:
                             "ddpg_cfg": None
                         },
                         "replay_memory_cfg": {
-                            "buffer_size": 100000,
-                            "prioritized_replay": True,
-                            "prioritized_replay_alpha": 0.6,
-                            "prioritized_replay_beta0": 0.4,
-                            "prioritized_replay_eps": 1e-06
+                             "buffer_size": 100000,
+                             "prioritized_replay": True,
+                             "prioritized_replay_alpha": 0.6,
+                             "prioritized_replay_beta0": 0.4,
+                             "prioritized_replay_eps": 1e-06
                         },
                         "trainer_cfg": {
                             "batch_size": 64,
@@ -57,8 +57,7 @@ class TestAgentConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -75,7 +74,7 @@ class TestAgentConfig:
                             "env_type": "gym",
                             "num_agents": 1
                         },
-                       "reinforcement_learning_cfg": {
+                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
@@ -108,8 +107,7 @@ class TestAgentConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -159,8 +157,7 @@ class TestAgentConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -177,7 +174,7 @@ class TestAgentConfig:
                             "env_type": "gym",
                             "num_agents": 1
                         },
-                       "reinforcement_learning_cfg": {
+                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_dueling",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
@@ -210,8 +207,7 @@ class TestAgentConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
                     },
                     {
@@ -228,7 +224,7 @@ class TestAgentConfig:
                             "env_type": "gym",
                             "num_agents": 1
                         },
-                       "reinforcement_learning_cfg": {
+                        "reinforcement_learning_cfg": {
                             "algorithm_type": "dqn_double",
                             "dqn_cfg": {
                                 "epsilon_start": 1.0,
@@ -261,8 +257,7 @@ class TestAgentConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
 
                     },
@@ -321,8 +316,7 @@ class TestAgentConfig:
                             "max_steps": 128,
                             "tau": 0.001,
                             "update_every": 4,
-                            "num_updates": 1,
-                            "num_agents": 1
+                            "num_updates": 1
                         }
 
                     },
