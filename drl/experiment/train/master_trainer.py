@@ -2,8 +2,8 @@ import torch
 import numpy as np
 from collections import deque
 import sys
-import logging
 
+from drl import drl_logger
 from drl.agent.i_agent import IAgent
 from drl.env.i_environment import IEnvironment
 from drl.experiment.configuration import Configuration
@@ -153,14 +153,14 @@ class MasterTrainer(Trainer):
 
                     score = episode_score.mean(axis=0)
 
-                    logging.debug(
+                    drl_logger.step(
                         'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
                         '\tEpsilon: {:.2f}\tAvg Pos Reward Ratio: {:.3f}\tAvg Neg Reward Ratio: {:.3f}\tLoss {:.6f}'
                             .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps,
                                     np.mean(pos_reward_ratio_window) if len(pos_reward_ratio_window) > 0 else 0,
                                     np.mean(neg_reward_ratio_window) if len(neg_reward_ratio_window) > 0 else 0,
                                     np.mean(loss_window) if len(loss_window) > 0 else 0))
-                logging.warning(
+                drl_logger.episode(
                     'Step: {}\tEpisode: {}\tEpoch: {}\tEpoch Step: {}\tEpoch Episode: {}\tEpisode Step: {}\tScore: {:.2f}'
                     '\tEpsilon: {:.2f}\tAvg Pos Reward Ratio: {:.3f}\tAvg Neg Reward Ratio: {:.3f}\tLoss {:.6f}'
                         .format(step, episode, epoch, epoch_step, epoch_episode, episode_step, score, self.eps,
@@ -244,11 +244,11 @@ class MasterTrainer(Trainer):
 
                     score = episode_score.mean(axis=0)
 
-                    logging.debug(
+                    drl_logger.step(
                         'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
                             .format(epoch, val_step, epoch_val_episode, episode_val_step, score, self.eps))
 
-                logging.warning(
+                drl_logger.episode(
                     'Epoch: {}\tVal Step: {}\tEpoch Val Episode: {}\tEpisode Step: {}\tVal Score: {:.2f}\tEpsilon: {:.2f}'
                         .format(epoch, val_step, epoch_val_episode, episode_val_step, score, self.eps))
 
@@ -259,7 +259,7 @@ class MasterTrainer(Trainer):
 
                 terminal = True
 
-            logging.critical(
+            drl_logger.epoch(
                 'Epoch {}\t Score: {:.2f}\t Val Score: {:.2f}\tEpsilon: {:.2f}'.format(epoch, np.mean(scores_window),
                                                                                        np.mean(val_scores_window),
                                                                                        self.eps))

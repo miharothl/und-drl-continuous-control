@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 import argparse
 
+from drl import drl_logger
 from drl.experiment.analyser import Analyzer
 from drl.experiment.configuration import Configuration
 from drl.experiment.experiment import Experiment
 from drl.experiment.explorer import Explorer
 from drl.logging import init_logging, set_logging_level, transform_verbose_count_to_logging_level
-
-import logging
-import logging.config
 
 
 def parse_arguments(params):
@@ -54,17 +52,13 @@ def parse_arguments(params):
                     action='store',
                     help="Analyse train experiments")
 
-    #                 default='score_max',
-    #                 choices=['score_max', 'score_min', 'score_median', 'random'],
-    #                 help="Model selection criteria")
-
     args = ap.parse_args()
 
     return args
 
 
 def main():
-    init_logging(logging.ERROR)
+    init_logging()
 
     params = Configuration().get_app_config()
 
@@ -73,7 +67,11 @@ def main():
 
         set_logging_level(transform_verbose_count_to_logging_level(args.verbose_count))
 
-        logging.debug(params)
+        drl_logger.info(
+            "Arguments.",
+            extra={"params": {
+                "arguments": params,
+            }})
 
         config = Configuration()
         config.set_current_exp_cfg(args.env)
@@ -112,10 +110,15 @@ def main():
         # env.close()
 
     except Exception as e:
-        logging.exception("Something went wrong :-(")
+
+        drl_logger.exception(
+            "Something went wrong :-(",
+            extra={"params": {
+                "exception": e,
+            }})
 
     finally:
-        logging.shutdown()
+        drl_logger.shutdown()
 
 
 if __name__ == '__main__':

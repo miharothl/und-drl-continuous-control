@@ -53,42 +53,6 @@ class DqnAgent(Agent):
         # Initialize time step (for updating every UPDATE_EVERY steps)
         self.step_update_counter = 0
 
-    def step(self, state, action, reward, next_state, done):
-        # Save experience in replay memory
-        self.memory.add(state, action, reward, next_state, done)
-
-        pos_reward_ratio = None
-        neg_reward_ratio = None
-        loss = None
-        beta = None
-
-        # Learn every UPDATE_EVERY time steps.
-        self.step_update_counter = (self.step_update_counter + 1) % self.trainer_cfg.update_every
-        if self.step_update_counter == 0:
-            # If enough samples are available in memory, get random subset and learn
-            if len(self.memory) > self.trainer_cfg.batch_size:
-
-                if self.replay_memory_cfg.prioritized_replay:
-                    beta = self.beta_schedule.value(self.step_counter)
-                    experience = self.memory.sample(self.trainer_cfg.batch_size, beta=beta)
-                    (obses_t, actions, rewards, obses_tp1, dones, weights, batch_idxes) = experience
-                    exp = (obses_t, actions, rewards, obses_tp1, dones, weights)
-                else:
-                    experiences = self.memory.sample(self.trainer_cfg.batch_size)
-                    obses_t, actions, rewards, obses_tp1, dones = experiences
-                    weights, batch_idxes = np.ones_like(rewards), None
-                    exp = (obses_t, actions, rewards, obses_tp1, dones, weights)
-
-                pos_reward_ratio, neg_reward_ratio, loss, td_error = self.learn(exp, self.trainer_cfg.gamma)
-
-                if self.replay_memory_cfg.prioritized_replay:
-                    new_priorities = np.abs(td_error) + self.replay_memory_cfg.prioritized_replay_eps
-                    self.memory.update_priorities(batch_idxes, new_priorities)
-
-        self.step_counter += 1
-
-        return pos_reward_ratio, neg_reward_ratio, loss, beta
-
     def act(self, state, eps=0.):
         """Returns actions for given state as per current policy.
 
@@ -174,3 +138,38 @@ class DqnAgent(Agent):
         return float(torch.sum(rewards > 0)) / rewards.shape[0], float(torch.sum(rewards < 0)) / rewards.shape[
             0], loss.item(), td_error
 
+    def step(self, state, action, reward, next_state, done):
+        # Save experience in replay memory
+        self.memory.add(state, action, reward, next_state, done)
+
+        pos_reward_ratio = None
+        neg_reward_ratio = None
+        loss = None
+        beta = None
+
+        # Learn every UPDATE_EVERY time steps.
+        self.step_update_counter = (self.step_update_counter + 1) % self.trainer_cfg.update_every
+        if self.step_update_counter == 0:
+            # If enough samples are available in memory, get random subset and learn
+            if len(self.memory) > self.trainer_cfg.batch_size:
+
+                if self.replay_memory_cfg.prioritized_replay:
+                    beta = self.beta_schedule.value(self.step_counter)
+                    experience = self.memory.sample(self.trainer_cfg.batch_size, beta=beta)
+                    (obses_t, actions, rewards, obses_tp1, dones, weights, batch_idxes) = experience
+                    exp = (obses_t, actions, rewards, obses_tp1, dones, weights)
+                else:
+                    experiences = self.memory.sample(self.trainer_cfg.batch_size)
+                    obses_t, actions, rewards, obses_tp1, dones = experiences
+                    weights, batch_idxes = np.ones_like(rewards), None
+                    exp = (obses_t, actions, rewards, obses_tp1, dones, weights)
+
+                pos_reward_ratio, neg_reward_ratio, loss, td_error = self.learn(exp, self.trainer_cfg.gamma)
+
+                if self.replay_memory_cfg.prioritized_replay:
+                    new_priorities = np.abs(td_error) + self.replay_memory_cfg.prioritized_replay_eps
+                    self.memory.update_priorities(batch_idxes, new_priorities)
+
+        self.step_counter += 1
+
+        return pos_reward_ratio, neg_reward_ratio, loss, beta

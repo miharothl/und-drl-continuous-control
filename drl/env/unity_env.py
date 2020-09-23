@@ -1,23 +1,22 @@
-import gym
-from gym.spaces import Discrete
 from unityagents import UnityEnvironment
 
-from drl import logging
+from drl import drl_logger
 from drl.env.i_environment import IEnvironment
-
-import logging
-import logging.config
 
 
 class UnityEnv(IEnvironment):
 
     def __init__(self, name):
-        logging.critical(name)
+
+        drl_logger.info(
+            "Initializing environment.'",
+            extra={"params": {
+                "name": name,
+            }})
 
         self.env = UnityEnvironment(file_name=name)
         self.brain_name = self.env.brain_names[0]
         self.termination_reward = 0
-        # env = UnityEnvironment(file_name="Banana_Linux_NoVis/Banana.x86_64")
 
     def action_offset(self):
         return 0
@@ -60,9 +59,6 @@ class UnityEnv(IEnvironment):
         next_state = env_info.vector_observations[0]  # get the next state
         reward = env_info.rewards[0]  # get the reward
         done = env_info.local_done[0]  # see if episode has finished
-        # next_state = env_info.vector_observations  # get the next state
-        # reward = env_info.rewards  # get the reward
-        # done = env_info.local_done  # see if episode has finished
 
         if done:
             reward += self.termination_reward

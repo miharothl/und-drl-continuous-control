@@ -1,5 +1,3 @@
-import logging
-
 from drl.agent.ddpg_agent import DdpgAgent
 from drl.agent.dqn_agent import DqnAgent
 from drl.agent.i_agent import IAgent

@@ -148,13 +148,13 @@ class Configuration:
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
-                                    64,
-                                    64
+                                    256,
+                                    128
                                 ]
                             },
                             "critic_model_cfg": {
                                 "hidden_layers": [
-                                    128,
+                                    256,
                                     128
                                 ]
                             },
@@ -427,13 +427,13 @@ class Configuration:
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
-                                    64,
-                                    64
+                                    256,
+                                    128
                                 ]
                             },
                             "critic_model_cfg": {
                                 "hidden_layers": [
-                                    128,
+                                    256,
                                     128
                                 ]
                             },
@@ -486,13 +486,13 @@ class Configuration:
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
-                                    64,
-                                    64
+                                    256,
+                                    128
                                 ]
                             },
                             "critic_model_cfg": {
                                 "hidden_layers": [
-                                    128,
+                                    256,
                                     128
                                 ]
                             },

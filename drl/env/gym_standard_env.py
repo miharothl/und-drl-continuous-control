@@ -1,7 +1,7 @@
 import gym
 from gym.spaces import Discrete
 
-from drl import logging
+from drl import drl_logger
 from drl.env.i_environment import IEnvironment
 
 
@@ -24,10 +24,11 @@ class GymStandardEnv(IEnvironment):
 
         if isDiscrete:
             num_action_space = self.__env.action_space.n
-            logging.debug("Env action space is discrete")
-            logging.debug("Env action space: {}".format(num_action_space))
+            drl_logger.info("Env action space is discrete")
+            drl_logger.info("Env action space: {}".format(num_action_space))
 
-        logging.debug("Env observation space: {}".format(self.__env.observation_space))
+        drl_logger.info("Env observation space: {}".format(self.__env.observation_space))
+
 
     def render(self, mode):
         self.__env.render(mode=mode)
