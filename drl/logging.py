@@ -29,6 +29,6 @@ def transform_verbose_count_to_logging_level(count):
     if count == 1:
         return 20
     elif count > 1:
-        return 20 - 2 * count
+        return 20 - 2 * (count-1)
 
     return 0
