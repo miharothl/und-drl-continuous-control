@@ -50,9 +50,9 @@ class Player:
 
         play_episode = 0
         play_step = 0
+        scores = []
 
         for i in range(num_episodes):
-            scores = []
             reward_total = 0
             play_episode_step = 0
             state, new_life = self.__env.reset()
@@ -99,17 +99,9 @@ class Player:
 
                     score = episode_score.mean(axis=0)
 
-                    play_episode_step += 1
-                    play_step += 1
 
                     # recorder.record([i, play_episode_step, action, reward, reward_total])
 
-                    if self.__config.get_current_exp_cfg().environment_cfg.num_agents == 1:
-                        if done:
-                            break
-                    else:
-                        if np.any(done):
-                            break
 
                     drl_logger.step(
                         "Play.",
@@ -120,6 +112,16 @@ class Player:
                             "score": "{:.3f}".format(score),
                             "elapsed": "{:.3f}s".format(time.time() - step_start_time),
                         }})
+
+                    if self.__config.get_current_exp_cfg().environment_cfg.num_agents == 1:
+                        if done:
+                            break
+                    else:
+                        if np.any(done):
+                            break
+
+                    play_episode_step += 1
+                    play_step += 1
 
                 drl_logger.episode(
                     "Play.",
@@ -146,7 +148,7 @@ class Player:
                     if done:
                         break
 
-            scores.append([[i, reward_total, play_episode_step]])
+            scores.append([i, score, play_episode_step])
 
             recorder.save()
 
