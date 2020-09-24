@@ -96,7 +96,6 @@ class MasterTrainer(Trainer):
 
             epoch_start_time = time.time()
 
-
             while (epoch_step < trainer_cfg.eval_frequency) and (step < trainer_cfg.max_steps):
 
                 episode_start_time = time.time()
@@ -282,6 +281,9 @@ class MasterTrainer(Trainer):
                             "elapsed": "{:.3f}s".format(time.time() - step_start_time),
                         }})
 
+                if val_step <= trainer_cfg.eval_steps:
+                    val_scores_window.append(score)  # save most recent score
+
                 drl_logger.episode(
                     "Validate.",
                     extra={"params": {
@@ -294,15 +296,12 @@ class MasterTrainer(Trainer):
                         "elapsed": "{:.0f}s".format(time.time() - episode_start_time),
                     }})
 
-                if val_step < trainer_cfg.eval_steps:
-                    val_scores_window.append(score)  # save most recent score
-
                 sys.stdout.flush()
 
                 terminal = True
 
             drl_logger.epoch(
-                "Completed Epoch.",
+                "Epoch.",
                 extra={"params": {
                     "epoch": epoch,
                     "mean score": np.mean(scores_window),

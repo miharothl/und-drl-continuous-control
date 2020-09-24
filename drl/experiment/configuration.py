@@ -501,7 +501,7 @@ class Configuration:
                     "trainer_cfg": {
                         "batch_size": 128,
                         "eval_frequency": 10000,
-                        "eval_steps": 1000,
+                        "eval_steps": 2000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
@@ -559,7 +559,7 @@ class Configuration:
                     "trainer_cfg": {
                         "batch_size": 128,
                         "eval_frequency": 10000,
-                        "eval_steps": 1000,
+                        "eval_steps": 2000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,

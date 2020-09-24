@@ -4,6 +4,7 @@ import sys
 
 DRL_LOG_NAME = "drl"
 
+
 def init_logging(level=logging.ERROR):
 
     drl_log = logging.getLogger(DRL_LOG_NAME)

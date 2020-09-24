@@ -1,6 +1,10 @@
+import time
+
 import torch
 import matplotlib.pyplot as plt
+import numpy as np
 
+from drl import drl_logger
 from drl.env.i_environment import IEnvironment
 from drl.experiment.configuration import Configuration
 from drl.experiment.recorder import Recorder
@@ -24,14 +28,13 @@ class Player:
     def play(self, trained, mode, is_rgb, model_filename, num_episodes, num_steps):
 
         if is_rgb:
-             return self.play_rgb(num_episodes=num_episodes, num_steps=num_steps, trained=trained, mode=mode, model_filename=model_filename)
+            return self.play_rgb(num_episodes=num_episodes, num_steps=num_steps, trained=trained, mode=mode, model_filename=model_filename)
         else:
-            # if self.__config.get_current_env() == 'banana':
-            #     return self.play_classic_banana(num_episodes=num_episodes, num_steps=num_steps, trained=trained, mode=mode, model_filename=model_filename)
-            # else:
             return self.play_classic(num_episodes=num_episodes, num_steps=num_steps, trained=trained, mode=mode, model_filename=model_filename)
 
-    def play_classic( self, num_episodes=3, score_max=True, score_med=False, trained=True, mode='rgb_array', model_filename=None, num_steps=None):
+    def play_classic( self, num_episodes=3, score_max=True, score_med=False, trained=True, mode='rgb_array',
+                      model_filename=None,
+                      num_steps=None):
 
         recorder = Recorder(header=['episode', 'step', 'action', 'reward', 'reward_total'],
                             session_id=self.__session_id,
@@ -40,53 +43,92 @@ class Player:
                             configuration=self.__config.get_current_exp_cfg())
 
         if trained or (model_filename is not None):
-            self.__agent.current_model.load_state_dict(torch.load(model_filename, map_location=lambda storage, loc: storage))
+            if self.__config.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type.startswith('dqn'):
+                self.__agent.current_model.load_state_dict(torch.load(model_filename, map_location=lambda storage, loc: storage))
+            elif self.__config.get_current_exp_cfg().reinforcement_learning_cfg.algorithm_type.startswith('ddpg'):
+                self.__agent.actor_current_model.load_state_dict(torch.load(model_filename, map_location=lambda storage, loc: storage))
+
+        play_episode = 0
+        play_step = 0
 
         for i in range(num_episodes):
             scores = []
             reward_total = 0
-            step = 0
+            play_episode_step = 0
             state, new_life = self.__env.reset()
             self.__env.render(mode=mode)
 
-            # if self.__config.get_env_is_atari_flag():
-            #     lives = -1
-            #     new_life = False
+            play_episode = i
+
+            episode_start_time = time.time()
 
             if num_steps is None:
+
+                terminal = True
+
                 while True:
+
+                    step_start_time = time.time()
+
+                    if terminal:
+                        terminal = False
+
+                        state, new_life = self.__env.reset()
+
+                        state = self.__agent.pre_process(state)
+                        episode_score = np.zeros(self.__config.get_current_exp_cfg().environment_cfg.num_agents)
+
                     if trained:
                         action = self.__agent.act(state)
                     else:
                         action = self.__agent.act(state, eps=1.)
 
-                    if self.__config.get_env_is_atari_flag():
-                        if self.__config.get_agent_start_game_action_required():
-                            if new_life:
-                                action = self.__config.get_agent_start_game_action()
+                    if new_life:
+                        start_game_action = self.__env.start_game_action()
+                        action = start_game_action if start_game_action is not None else action
+
+                    action += self.__env.action_offset()
 
                     self.__env.render(mode=mode)
 
                     state, reward, done, info = self.__env.step(action)
 
-                    if self.__config.get_env_is_atari_flag():
-                        if info['ale.lives'] > lives:
-                            lives = info['ale.lives']
-                            new_life = True
-                        elif info['ale.lives'] < lives:
-                            lives = info['ale.lives']
-                            new_life = True
-                            reward = reward - 1
-                        else:
-                            new_life = False
+                    action -= self.__env.action_offset()
 
-                    reward_total += reward
-                    step += 1
+                    episode_score += reward
 
-                    recorder.record([i, step, action, reward, reward_total])
+                    score = episode_score.mean(axis=0)
 
-                    if done:
-                        break
+                    play_episode_step += 1
+                    play_step += 1
+
+                    # recorder.record([i, play_episode_step, action, reward, reward_total])
+
+                    if self.__config.get_current_exp_cfg().environment_cfg.num_agents == 1:
+                        if done:
+                            break
+                    else:
+                        if np.any(done):
+                            break
+
+                    drl_logger.step(
+                        "Play.",
+                        extra={"params": {
+                            "step": play_step,
+                            "episode": play_episode,
+                            "episode_step": play_episode_step,
+                            "score": "{:.3f}".format(score),
+                            "elapsed": "{:.3f}s".format(time.time() - step_start_time),
+                        }})
+
+                drl_logger.episode(
+                    "Play.",
+                    extra={"params": {
+                        "episode": play_episode,
+                        "score": "{:.3f}".format(score),
+                        "elapsed": "{:.3f}s".format(time.time() - episode_start_time),
+                    }})
+
             else:
                 for j in range(num_steps):
                     if trained:
@@ -97,14 +139,14 @@ class Player:
                     self.__env.render(mode=mode)
                     state, reward, done, _ = self.__env.step(action)
                     reward_total += reward
-                    step += 1
+                    play_episode_step += 1
 
-                    recorder.record([i, step, action, reward, reward_total])
+                    recorder.record([i, play_episode_step, action, reward, reward_total])
 
                     if done:
                         break
 
-            scores.append([[i, reward_total, step]])
+            scores.append([[i, reward_total, play_episode_step]])
 
             recorder.save()
 
@@ -148,163 +190,3 @@ class Player:
             scores.append([[i, reward_total, steps_total]])
 
         return scores
-
-    def play_plot(self, score_max=True, score_med=False):
-
-        filename = self.select_model_filename(score_max, score_med)
-
-        self.__agent.current_model.load_state_dict(torch.load(filename))
-
-        # from pyvirtualdisplay import Display
-        # display = Display(visible=0, size=(1400, 900))
-        # display.start()
-
-        # is_ipython = 'inline' in plt.get_backend()
-        # if is_ipython:
-        #     from IPython import display
-        #
-
-        from IPython import display
-
-        for i in range(1):
-            state, new_life = self.__env.reset()
-            img = plt.imshow(self.__env.render(mode='rgb_array'))
-            for j in range(200):
-                action = self.__agent.act(state)
-                img.set_data(self.__env.render(mode='rgb_array'))
-                plt.axis('off')
-                display.display(plt.gcf())
-                display.clear_output(wait=True)
-                state, reward, done, _ = self.__env.step(action)
-                if done:
-                    break
-
-        # display.stop()
-
-    def play_classic_banana( self, num_episodes=3, score_max=True, score_med=False, trained=True, mode='rgb_array', model_filename=None, num_steps=None):
-
-        recorder = Recorder(header=['episode', 'step', 'action', 'reward', 'reward_total'],
-                            session_id=self.__session_id,
-                            experiments_path=self.__config.get_app_experiments_path(train_mode=False),
-                            model=None)
-
-        if trained or (model_filename is not None):
-            self.__agent.current_model.load_state_dict(torch.load(model_filename, map_location=lambda storage, loc: storage))
-
-        for i in range(num_episodes):
-            scores = []
-            reward_total = 0
-            step = 0
-
-            brain_name = self.__env.brain_names[0]
-            brain = self.__env.brains[brain_name]
-
-            # reset the environment
-            env_info = self.__env.reset(train_mode=False)[brain_name]  # reset the environment
-            state = env_info.vector_observations[0]  # get the current state
-
-            # state = self.__env.reset()
-            # self.__env.render(mode=mode)
-
-            # if self.__config.get_current_env_is_atari_flag():
-            #     lives = -1
-            #     new_life = False
-
-            if num_steps is None:
-                while True:
-                    if trained:
-                        action = self.__agent.act(state)
-                    else:
-                        action = self.__agent.act(state, eps=1.)
-
-                    env_info = self.__env.step(action)[brain_name]  # send the action to the environment
-
-                    next_state = env_info.vector_observations[0]  # get the next state
-                    reward = env_info.rewards[0]  # get the reward
-                    done = env_info.local_done[0]  # see if episode has finished
-                    reward_total += reward
-                    step += 1
-                    state = next_state  # roll over the state to next time step
-
-                    if done:  # exit loop if episode finished
-                        print('done')
-                        break
-
-                    recorder.record([i, step, action, reward, reward_total])
-
-                    if done:
-                        break
-            else:
-                for j in range(num_steps):
-
-                    if trained:
-                        action = self.__agent.act(state)
-                    else:
-                        action = self.__agent.act(state, eps=1.)
-
-                    env_info = self.__env.step(action)[brain_name]  # send the action to the environment
-
-                    next_state = env_info.vector_observations[0]  # get the next state
-                    reward = env_info.rewards[0]  # get the reward
-                    done = env_info.local_done[0]  # see if episode has finished
-                    reward_total += reward
-                    step += 1
-                    state = next_state  # roll over the state to next time step
-
-                    if done:  # exit loop if episode finished
-                        print('done')
-                        break
-
-                    recorder.record([i, step, action, reward, reward_total])
-
-            scores.append([[i, reward_total, step]])
-
-            recorder.save()
-
-        return scores
-
-
-
-    def play_banana(self, score_max=True, score_med=False):
-
-        filename = self.select_model_filename(score_max, score_med)
-
-        self.__agent.qnetwork_local.load_state_dict(torch.load(filename))
-
-
-        brain_name = self.__env.brain_names[0]
-        brain = self.__env.brains[brain_name]
-
-        # reset the environment
-        env_info = self.__env.reset(train_mode=True)[brain_name]
-
-        # number of agents in the environment
-        print('Number of agents:', len(env_info.agents))
-
-        # number of actions
-        action_size = brain.vector_action_space_size
-        print('Number of actions:', action_size)
-
-        # examine the state space
-        state = env_info.vector_observations[0]
-        print('States look like:', state)
-        state_size = len(state)
-        print('States have length:', state_size)
-
-        env_info = self.__env.reset(train_mode=False)[brain_name]  # reset the environment
-        state = env_info.vector_observations[0]  # get the current state
-        score = 0  # initialize the score
-        while True:
-            action = self.__agent.act(state)
-            env_info = self.__env.step(action)[brain_name]  # send the action to the environment
-            next_state = env_info.vector_observations[0]  # get the next state
-            reward = env_info.rewards[0]  # get the reward
-            done = env_info.local_done[0]  # see if episode has finished
-            score += reward  # update the score
-            state = next_state  # roll over the state to next time step
-            if done:  # exit loop if episode finished
-                print('done')
-                break
-
-        print("Score: {}".format(score))
-

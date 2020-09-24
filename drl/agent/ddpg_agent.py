@@ -36,14 +36,14 @@ class DdpgAgent(Agent):
 
         # Actor Network (w/ Target Network)
         # Critic Network (w/ Target Network)
-        self.actor_local, self.actor_target, self.critic_local, self.critic_target = ModelFactory.create(seed, device, cfg)
+        self.actor_current_model, self.actor_target_model, self.critic_current_model, self.critic_target_model = ModelFactory.create(seed, device, cfg)
 
         self.actor_optimizer = optim.Adam(
-            self.actor_local.parameters(),
+            self.actor_current_model.parameters(),
             lr=self.reinforcement_learning_cfg.ddpg_cfg.lr_actor)
 
         self.critic_optimizer = optim.Adam(
-            self.critic_local.parameters(),
+            self.critic_current_model.parameters(),
             lr=self.reinforcement_learning_cfg.ddpg_cfg.lr_critic,
             weight_decay=self.reinforcement_learning_cfg.ddpg_cfg.weight_decay)
 
@@ -63,10 +63,10 @@ class DdpgAgent(Agent):
     def act(self, state, eps=0., add_noise=True):
         """Returns actions for given state as per current policy."""
         state = torch.from_numpy(state).float().to(device)
-        self.actor_local.eval()
+        self.actor_current_model.eval()
         with torch.no_grad():
-            action = self.actor_local(state).cpu().data.numpy()
-        self.actor_local.train()
+            action = self.actor_current_model(state).cpu().data.numpy()
+        self.actor_current_model.train()
         if add_noise:
             if self.num_agents == 1:
                 action += self.noise.sample() * eps
@@ -79,11 +79,11 @@ class DdpgAgent(Agent):
 
         model_actor = namedtuple('name', 'weights')
         model_actor.name = 'current_actor'
-        model_actor.weights = self.actor_local
+        model_actor.weights = self.actor_current_model
 
         model_critic = namedtuple('name', 'weights')
         model_critic.name = 'current_critic'
-        model_critic.weights = self.critic_local
+        model_critic.weights = self.critic_current_model
 
         return [model_actor, model_critic]
 
@@ -110,12 +110,12 @@ class DdpgAgent(Agent):
 
         # ---------------------------- update critic ---------------------------- #
         # Get predicted next-state actions and Q values from target models
-        actions_next = self.actor_target(next_states)
-        Q_targets_next = self.critic_target(next_states, actions_next)
+        actions_next = self.actor_target_model(next_states)
+        Q_targets_next = self.critic_target_model(next_states, actions_next)
         # Compute Q targets for current states (y_i)
         Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
         # Compute critic loss
-        Q_expected = self.critic_local(states, actions)
+        Q_expected = self.critic_current_model(states, actions)
         critic_loss = F.mse_loss(Q_expected, Q_targets)
         # Minimize the loss
         self.critic_optimizer.zero_grad()
@@ -124,16 +124,16 @@ class DdpgAgent(Agent):
 
         # ---------------------------- update actor ---------------------------- #
         # Compute actor loss
-        actions_pred = self.actor_local(states)
-        actor_loss = -self.critic_local(states, actions_pred).mean()
+        actions_pred = self.actor_current_model(states)
+        actor_loss = -self.critic_current_model(states, actions_pred).mean()
         # Minimize the loss
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
 
         # ----------------------- update target networks ----------------------- #
-        self.soft_update(self.critic_local, self.critic_target, self.trainer_cfg.tau)
-        self.soft_update(self.actor_local, self.actor_target, self.trainer_cfg.tau)
+        self.soft_update(self.critic_current_model, self.critic_target_model, self.trainer_cfg.tau)
+        self.soft_update(self.actor_current_model, self.actor_target_model, self.trainer_cfg.tau)
 
         return 0, 0, 0, 0
 

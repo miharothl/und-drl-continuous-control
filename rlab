@@ -108,7 +108,6 @@ def main():
                 )
 
     except Exception as e:
-
         drl_logger.exception(
             "Something went wrong :-(",
             extra={"params": {
@@ -116,7 +115,7 @@ def main():
             }})
 
     finally:
-        drl_logger.shutdown()
+        pass
 
 
 if __name__ == '__main__':
