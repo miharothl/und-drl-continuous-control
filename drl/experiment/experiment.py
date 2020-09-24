@@ -36,7 +36,7 @@ class Experiment:
                 config=self.__config,
                 session_id=self.get_session_id()) as player:
 
-            player.play(trained=trained,
+            return player.play(trained=trained,
                         mode=mode,
                         is_rgb=self.__config.get_current_exp_cfg().agent_cfg.state_rgb,
                         model_filename=model,
