@@ -150,7 +150,10 @@ class Player:
 
             recorder.save()
 
-        return scores
+        np_scr = np.array(scores)
+        mean = np_scr[:, 1].mean()
+
+        return scores, mean
 
     def play_rgb(self, num_episodes=3, score_max=True, score_med=False, trained=True, mode='rgb_array', model_filename=None, num_steps=None):
 
