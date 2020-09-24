@@ -97,7 +97,7 @@ python -m ipykernel install --user --name drlnd --display-name "drlnd"
   - Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Windows_x86.zip)
   - Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Windows_x86_64.zip)
 
-If not Mac OSX copy environment into env/unity and update configuration drl/experiment/configuration.py
+If you are not using Mac OSX, copy Unity environment into env/unity and update configuration drl/experiment/configuration.py, for example:
 
 ```
 {
@@ -127,7 +127,7 @@ To play banana environment with a dummy agent
 ```
 To play the environment with a trained agent
 ```
-./rlab -e reacher -p -f model.pth -vvvv
+./rlab -e reacher-multiple -p -f model.pth -vvvv
 ```
 
 # Development
