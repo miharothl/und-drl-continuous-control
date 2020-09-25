@@ -93,15 +93,14 @@ python -m ipykernel install --user --name drlnd --display-name "drlnd"
 
     (_For AWS_) If you'd like to train the agent on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Linux_NoVis.zip) (version 1) or [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux_NoVis.zip) (version 2) to obtain the "headless" version of the environment.  You will **not** be able to watch the agent without enabling a virtual screen, but you will be able to train the agent.  (_To watch the agent, you should follow the instructions to [enable a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md), and then download the environment for the **Linux** operating system above._)
 
-If you are not using Mac OSX, copy Unity environment into env/unity and update configuration drl/experiment/configuration.py, for example:
-
-```
-{
-    'id': 'reacher-multiple',
-    'gym_id': 'env/unity/mac/reacher-multiple-agent.app',
-    "agent_cfg": {
-...
-```
+   If you are not using Mac OSX, copy Unity environment into env/unity and update configuration drl/experiment/configuration.py, for example:
+   ```
+   {
+       'id': 'reacher-multiple',
+       'gym_id': 'env/unity/mac/reacher-multiple-agent.app',
+       "agent_cfg": {
+   ...
+   ```
 
 # How to Use Reinforcement Learning Lab
 
@@ -109,15 +108,15 @@ To get help
 ```
 ./rlab -h
 ```
-List of supported environments
+To list supported environments
 ```
 ./rlab -l
 ```
-To train banana environment
+To train the environment
 ```
 ./rlab -e reacher-multiple -t -vvvv
 ```
-To play banana environment with a dummy agent
+To play the environment with a dummy agent
 ```
 ./rlab -e reacher-multiple -p -vvvv
 ```
