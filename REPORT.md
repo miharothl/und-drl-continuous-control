@@ -122,7 +122,7 @@ The first version of an agent that can solve the environment with scores 30+ is 
 2020-09-24 18:35:23,298 - drl - EPISODE - Validate. - {'epoch': 1, 'epoch_step': 2000, 'epoch_episode': 2, 'episode_step': 999, 'score': '30.859', 'eps': '0.544', 'elapsed': '80s'}
 ```
 
-The best agent is trained in epoch 29 after playing 299 episodes and can achieve a score **38.9** over 100 consecutive episodes using multiple 20 agents.
+The best agent is trained in epoch 29 after playing 299 episodes and can achieve a score **38.84** over 100 consecutive episodes using multiple 20 agents.
 
 ```
 2020-09-25 08:40:34,511 - drl - EPISODE - Play. - {'episode': 97, 'score': '39.093', 'elapsed': '79.617s'}
