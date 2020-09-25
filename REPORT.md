@@ -28,7 +28,7 @@ I started with the base DDPG [2] alghoritm provided by [Udacity](https://github.
 I modified the code to the Unity Reacher environment, and the code agent was able to achieve 30+ scores over 100 consecutive episodes.
 I followed the procedure outlined by Udacity:
 
-1. Adjust to code to use multiple agents, that during training use shared experience replay buffer
+1. Adjust to code to use multiple agents, that during training use shared experience replay buffer and
 2. Implemented less aggressive training strategy, updating the network 20 times on every 10 timesteps.
 
 The steps that I followed to solve this environment:
@@ -38,17 +38,17 @@ The steps that I followed to solve this environment:
 3. Implement the learning algorithm
 4. Run experiments and select the best agent
 
-## Evaluate State & Action Space of the Environment
+## 1. Evaluate State & Action Space of the Environment
 
 The state-space has 33 dimensions corresponding to the position, rotation, velocity, and angular velocities of the two arm rigid bodies.
 Action-space is continuous; it has 4 dimensions corresponding to torque applicable to two joints.
 
-## Establish Baseline Using Random Action Policy
+## 2. Establish Baseline Using Random Action Policy
 
 Before starting the deep reinforcement learning process, its good to understand the environment. Controlling the 
 multiple robots with an agent where actions have randomly selected achieve scores averaging 0.4 over 100 consecutive episodes.
  
-## Implement Learning Algorithm
+## 3. Implement Learning Algorithm
 
 The
 [agent](https://github.com/miharothl/...ddpg_agent.py)
@@ -83,7 +83,7 @@ randomly sampled from [replay buffer](https://.../replay_buffer.py)
 During the exploitation phase of the training (lower *Epsilon*) the noise added to the actions is proportionally scaled down (*epsilon end*)
 and mostly based on the estimated policies calculated by the current actor neural network.
 
-## Run Experiments and Select Best Agent
+## 4. Run Experiments and Select Best Agent
 
 [Training](https://..../continous-control.ipynb)
 is done using the epochs, consisting of training episodes where epsilon greedy agent is used,
