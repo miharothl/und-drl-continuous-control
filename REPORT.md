@@ -3,6 +3,8 @@
 [image1]: https://user-images.githubusercontent.com/10624937/43851024-320ba930-9aff-11e8-8493-ee547c6af349.gif "Trained Agent"
 [image2]: https://user-images.githubusercontent.com/10624937/42135608-be87357e-7d12-11e8-8eca-e6d5fabdba6b.gif "Bipedal Walker"
 [image3]: https://user-images.githubusercontent.com/10624937/43851646-d899bf20-9b00-11e8-858c-29b5c2c94ccc.png "Crawler"
+[image4]: https://raw.githubusercontent.com/miharothl/DRLND-Continuous-Control/master/images/training-score.png   "Score"
+[image5]: https://raw.githubusercontent.com/miharothl/DRLND-Continuous-Control/master/images/training-epsilon.png "Epsilon"
 
 # Goal
 
@@ -113,6 +115,9 @@ I used the following training hyperparameters:
 |Use Prioritized Replay     | False                |
 
 The first version of an agent that can solve the environment with scores 30+ is obtained in 1st epoch after 19 training episodes. 
+
+![Training Score][image4]
+![Training Epsilon][image5]
 
 ```
 2020-09-24 18:29:49,164 - drl - EPISODE - Train. - {'step': 18000, 'episode': 17, 'epoch': 1, 'epoch_step': 8000, 'epoch_episode': 8, 'episode_step': 999, 'score': '24.504', 'eps': '0.596', 'elapsed': '87s'}
