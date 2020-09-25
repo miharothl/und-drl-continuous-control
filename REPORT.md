@@ -124,6 +124,14 @@ The first version of an agent that can solve the environment with scores 30+ is 
 
 The best agent is trained in epoch 29 after playing 299 episodes and can achieve a score **38.9** over 100 consecutive episodes using multiple 20 agents.
 
+```
+2020-09-25 08:40:34,511 - drl - EPISODE - Play. - {'episode': 97, 'score': '39.093', 'elapsed': '79.617s'}
+2020-09-25 08:41:54,146 - drl - EPISODE - Play. - {'episode': 98, 'score': '38.862', 'elapsed': '79.619s'}
+2020-09-25 08:43:13,783 - drl - EPISODE - Play. - {'episode': 99, 'score': '38.480', 'elapsed': '79.619s'}
+
+Average score over 100 episodes is 38.83892413188238
+```
+
 # Future Work
 
 Deep reinforcement learning is a fascinating and exciting topic. I'll continue to improve my reinforcement learning
