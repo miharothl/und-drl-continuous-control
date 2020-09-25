@@ -112,7 +112,7 @@ I used the following training hyperparameters:
 |Buffer Size                |100000                |
 |Use Prioritized Replay     | False                |
 
-The first version of an agent that can solve the environment with scores 30+ is obtained in 1 epoch after 20 episodes. 
+The first version of an agent that can solve the environment with scores 30+ is obtained in 1st epoch after 19 training episodes. 
 
 ```
 2020-09-24 18:29:49,164 - drl - EPISODE - Train. - {'step': 18000, 'episode': 17, 'epoch': 1, 'epoch_step': 8000, 'epoch_episode': 8, 'episode_step': 999, 'score': '24.504', 'eps': '0.596', 'elapsed': '87s'}
