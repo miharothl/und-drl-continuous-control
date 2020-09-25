@@ -19,7 +19,7 @@ The environment is considered solved, when the average (over 100 episodes) of th
 
 # Approach
 
-I started with the base DDPG [2] alghoritm provided by [Udacity](https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-bipedal)
+I started with the base DDPG [3] alghoritm provided by [Udacity](https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-bipedal)
 [1], which can train a bipedal walker.
  
 
@@ -51,33 +51,33 @@ multiple robots with an agent where actions have randomly selected achieve score
 ## 3. Implement Learning Algorithm
 
 The
-[agent](https://github.com/miharothl/...ddpg_agent.py)
+[agent](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/agent/ddpg_agent.py)
 and 
-[environment](https://.../unity_multiple_env.py)
+[environment](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/env/unity_multiple_env.py)
 are created according to the provided
-[configuration](https://.../configuration.py)
+[configuration](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/experiment/configuration.py)
 .
-[Recorder](https://.../recorder.py)
+[Recorder](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/experiment/recorder.py)
 records the experiment and store the results for later
-[analysis](https://.../analysis.ipynb)
+[analysis](https://github.com/miharothl/lab-drlnd-robot/blob/master/rlab-analysis.ipynb)
 .
 
 The agent interacts with the environment in the
-[training loop](https://.../master_trainer.py)
+[training loop](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/experiment/train/master_trainer.py)
 .
 In the exploration phase (higher *Epsilon*) of the training
 agent's actions are mostly random, created using 
-[Ornstein-Uhlenbeck noise generator] (https://.../ou_noise.py)
+[Ornstein-Uhlenbeck noise generator](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/agent/tools/ou_noise.py)
 . Actions, environment states, dones, and rewards tuples, are stored in the experience
 replay buffer. The *Buffer Size* parameter determines the size of the buffer.
 
-DDPG [2] is using 
-[actor and critic](https://...)
+DDPG [3] is using 
+[actor and critic](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/model/ddpg_model.py)
 neural networks. Both have current, and target model with identical architecture used to stabilize the DDPG learning process.
 During the learning process, weights of the target network are fixed (or updated more slowly based on parameter *Tau*).
 
 Learning is performed *Num Updates* times on every *Update Every* steps, when *Batch Size* of actions, states, dones and rewards tuples are
-randomly sampled from [replay buffer](https://.../replay_buffer.py)
+randomly sampled from [replay buffer](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/agent/tools/replay_buffer.py) [2]
 .
 
 During the exploitation phase of the training (lower *Epsilon*) the noise added to the actions is proportionally scaled down (*epsilon end*)
@@ -85,7 +85,7 @@ and mostly based on the estimated policies calculated by the current actor neura
 
 ## 4. Run Experiments and Select Best Agent
 
-[Training](https://..../continous-control.ipynb)
+[Training](https://github.com/miharothl/lab-drlnd-robot/blob/master/rlab-continous-control.ipynb)
 is done using the epochs, consisting of training episodes where epsilon greedy agent is used,
 and validation episodes using only actions predicted by the trained agent.
  
@@ -128,14 +128,16 @@ The best agent is trained in epoch 29 after playing 299 episodes and can achieve
 
 Deep reinforcement learning is a fascinating and exciting topic. I'll continue to improve my reinforcement learning
 laboratory by applying
- * distributed algorithms like PPO [3], A3C [4] or D4PG [5] and by
+ * distributed algorithms like PPO [4], A3C [5] or D4PG [6] and by
  * solving other attractive environments requiring continuous control like the Crawler.
 
 ![Crawler][image3]
 
 # References
   - [1] [Udacity](https://github.com/udacity/deep-reinforcement-learning)
-  - [2] [Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971)
-  - [3] [Proximal Policy Optimization Algorithms](https://arxiv.org/pdf/1707.06347.pdf) 
-  - [4] [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/pdf/1602.01783.pdf)
-  - [5] [Distributed Distributional Deterministic Policy Gradients](https://openreview.net/pdf?id=SyZipzbCb)
+  - [2] [Open AI Baselines](https://github.com/openai/baselines)
+  - [3] [Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971)
+  - [4] [Proximal Policy Optimization Algorithms](https://arxiv.org/pdf/1707.06347.pdf) 
+  - [5] [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/pdf/1602.01783.pdf)
+  - [6] [Distributed Distributional Deterministic Policy Gradients](https://openreview.net/pdf?id=SyZipzbCb)
+
