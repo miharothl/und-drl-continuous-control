@@ -6,8 +6,8 @@
 
 # Goal
 
-The goal of the project is to train an agent and control 20 robot arms to reach the randomly circulating spheres, circulating around the robot.
-
+The project aims to train an agent and control 20 robot arms simultaneously, to reach spheres randomly circulating the robot.
+Each robot consists of two arms joints.
 
 ![Trained Agent][image1]
 
@@ -25,30 +25,30 @@ I started with the base DDPG [2] alghoritm provided by [Udacity](https://github.
 
 ![Bipedal Walker][image2]
 
-I adjusted the code to the Unity Reacher environment, and the code agent was able to achieve 30+ scores over 100 consecutive episodes.
-I tried to change many different hyperparameters and followed the procedure outlined by Udacity.
+I modified the code to the Unity Reacher environment, and the code agent was able to achieve 30+ scores over 100 consecutive episodes.
+I followed the procedure outlined by Udacity:
 
-1. Adjust to code to use multiple agents, that during training use shared expericen replay buffer
-2. Implemented less agressive training stragegy, updating the network 20 times avery 10 timesteps.
+1. Adjust to code to use multiple agents, that during training use shared experience replay buffer and
+2. Implemented less aggressive training strategy, updating the network 20 times on every 10 timesteps.
 
-The steps that I followed to solve this environment
+The steps that I followed to solve this environment:
 
 1. Evaluate the state and action space of the environment
 2. Establish a baseline using a random action policy
 3. Implement the learning algorithm
 4. Run experiments and select the best agent
 
-## Evaluate State & Action Space of the Environment
+## 1. Evaluate State & Action Space of the Environment
 
-The state-space has 33 dimensions corresponding to position, rotation, velocity, and angular velocities of the two arm rigid bodies.
-Action-space is continuous, it has 4 dimensions corresponding to torque applicable to two joints.
+The state-space has 33 dimensions corresponding to the position, rotation, velocity, and angular velocities of the two arm rigid bodies.
+Action-space is continuous; it has 4 dimensions corresponding to torque applicable to two joints.
 
-## Establish Baseline Using Random Action Policy
+## 2. Establish Baseline Using Random Action Policy
 
-Before starting the deep reinforcement learning process its good to understand the environment. Controlling the 
-robots with agent where actions are randomly selected achives scores averaging 0 over 100 consecutive episodes.
+Before starting the deep reinforcement learning process, its good to understand the environment. Controlling the 
+multiple robots with an agent where actions have randomly selected achieve scores averaging 0.4 over 100 consecutive episodes.
  
-## Implement Learning Algorithm
+## 3. Implement Learning Algorithm
 
 The
 [agent](https://github.com/miharothl/...ddpg_agent.py)
@@ -66,28 +66,30 @@ The agent interacts with the environment in the
 [training loop](https://.../master_trainer.py)
 .
 In the exploration phase (higher *Epsilon*) of the training
-agent's actions are mostly random, greated using 
+agent's actions are mostly random, created using 
 [Ornstein-Uhlenbeck noise generator] (https://.../ou_noise.py)
 . Actions, environment states, dones, and rewards tuples, are stored in the experience
 replay buffer. The *Buffer Size* parameter determines the size of the buffer.
 
-DDPG is using actor and critic neural networks. Both have current and target model with identical architecture are used to stabilise the DDPG learning process.
+DDPG [2] is using 
+[actor and critic](https://...)
+neural networks. Both have current, and target model with identical architecture used to stabilize the DDPG learning process.
 During the learning process, weights of the target network are fixed (or updated more slowly based on parameter *Tau*).
 
 Learning is performed *Num Updates* times on every *Update Every* steps, when *Batch Size* of actions, states, dones and rewards tuples are
-sampled from the randomly sampled from 
-[replay buffer](https://.../replay_buffer.py)
+randomly sampled from [replay buffer](https://.../replay_buffer.py)
 .
 
-During the exploitation phase of the training (lower *Epsilon*) the the noise added to the actions is proportionally sampled down (*epsilon end*)
-and mostly based on the estimated Q values calculated by the current neural network.
+During the exploitation phase of the training (lower *Epsilon*) the noise added to the actions is proportionally scaled down (*epsilon end*)
+and mostly based on the estimated policies calculated by the current actor neural network.
 
-
-## Run Experiments and Select Best Agent
+## 4. Run Experiments and Select Best Agent
 
 [Training](https://..../continous-control.ipynb)
 is done using the epochs, consisting of training episodes where epsilon greedy agent is used,
-and validation episodes using only actions predicted by the trained agent. I used the following training hyper parameters:
+and validation episodes using only actions predicted by the trained agent.
+ 
+I used the following training hyperparameters:
 
 |Hyper Parameter            |Value                 |
 |:---                       |:---                  |
@@ -109,16 +111,31 @@ and validation episodes using only actions predicted by the trained agent. I use
 |Critic Hidden Layers Units |[256, 128]            |
 |Buffer Size                |100000                |
 |Use Prioritized Replay     | False                |
- 
-The environment is solved in epcch x after playing 30 episodes. The trained agent achieves an average score of 38.51 over 100 episodes.
+
+The first version of an agent that can solve the environment with scores 30+ is obtained in 1st epoch after 19 training episodes. 
+
+```
+2020-09-24 18:29:49,164 - drl - EPISODE - Train. - {'step': 18000, 'episode': 17, 'epoch': 1, 'epoch_step': 8000, 'epoch_episode': 8, 'episode_step': 999, 'score': '24.504', 'eps': '0.596', 'elapsed': '87s'}
+2020-09-24 18:31:16,644 - drl - EPISODE - Train. - {'step': 19000, 'episode': 18, 'epoch': 1, 'epoch_step': 9000, 'epoch_episode': 9, 'episode_step': 999, 'score': '24.781', 'eps': '0.578', 'elapsed': '87s'}
+2020-09-24 18:32:44,233 - drl - EPISODE - Train. - {'step': 20000, 'episode': 19, 'epoch': 1, 'epoch_step': 10000, 'epoch_episode': 10, 'episode_step': 999, 'score': '27.614', 'eps': '0.561', 'elapsed': '88s'}
+2020-09-24 18:34:03,759 - drl - EPISODE - Validate. - {'epoch': 1, 'epoch_step': 1000, 'epoch_episode': 1, 'episode_step': 999, 'score': '30.364', 'eps': '0.544', 'elapsed': '80s'}
+2020-09-24 18:35:23,298 - drl - EPISODE - Validate. - {'epoch': 1, 'epoch_step': 2000, 'epoch_episode': 2, 'episode_step': 999, 'score': '30.859', 'eps': '0.544', 'elapsed': '80s'}
+```
+
+The best agent is trained in epoch 29 after playing 299 episodes and can achieve a score **38.9** over 100 consecutive episodes using multiple 20 agents.
 
 # Future Work
 
 Deep reinforcement learning is a fascinating and exciting topic. I'll continue to improve my reinforcement learning
-laboratory by solving the crawler.
+laboratory by applying
+ * distributed algorithms like PPO [3], A3C [4] or D4PG [5] and by
+ * solving other attractive environments requiring continuous control like the Crawler.
 
 ![Crawler][image3]
 
 # References
   - [1] [Udacity](https://github.com/udacity/deep-reinforcement-learning)
   - [2] [Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971)
+  - [3] [Proximal Policy Optimization Algorithms](https://arxiv.org/pdf/1707.06347.pdf) 
+  - [4] [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/pdf/1602.01783.pdf)
+  - [5] [Distributed Distributional Deterministic Policy Gradients](https://openreview.net/pdf?id=SyZipzbCb)
