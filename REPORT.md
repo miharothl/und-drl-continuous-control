@@ -53,33 +53,33 @@ multiple robots with an agent where actions have randomly selected achieve score
 ## 3. Implement Learning Algorithm
 
 The
-[agent](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/agent/ddpg_agent.py)
+[agent](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/agent/ddpg_agent.py)
 and 
-[environment](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/env/unity_multiple_env.py)
+[environment](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/env/unity_multiple_env.py)
 are created according to the provided
-[configuration](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/experiment/configuration.py)
+[configuration](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/experiment/configuration.py)
 .
-[Recorder](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/experiment/recorder.py)
+[Recorder](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/experiment/recorder.py)
 records the experiment and store the results for later
-[analysis](https://github.com/miharothl/lab-drlnd-robot/blob/master/rlab-analysis.ipynb)
+[analysis](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/rlab-analysis.ipynb)
 .
 
 The agent interacts with the environment in the
-[training loop](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/experiment/train/master_trainer.py)
+[training loop](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/experiment/train/master_trainer.py)
 .
 In the exploration phase (higher *Epsilon*) of the training
 agent's actions are mostly random, created using 
-[Ornstein-Uhlenbeck noise generator](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/agent/tools/ou_noise.py)
+[Ornstein-Uhlenbeck noise generator](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/agent/tools/ou_noise.py)
 . Actions, environment states, dones, and rewards tuples, are stored in the experience
 replay buffer. The *Buffer Size* parameter determines the size of the buffer.
 
 DDPG [3] is using 
-[actor and critic](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/model/ddpg_model.py)
+[actor and critic](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/model/ddpg_model.py)
 neural networks. Both have current, and target model with identical architecture used to stabilize the DDPG learning process.
 During the learning process, weights of the target network are fixed (or updated more slowly based on parameter *Tau*).
 
 Learning is performed *Num Updates* times on every *Update Every* steps, when *Batch Size* of actions, states, dones and rewards tuples are
-randomly sampled from [replay buffer](https://github.com/miharothl/lab-drlnd-robot/blob/master/drl/agent/tools/replay_buffer.py) [2]
+randomly sampled from [replay buffer](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/drl/agent/tools/replay_buffer.py) [2]
 .
 
 During the exploitation phase of the training (lower *Epsilon*) the noise added to the actions is proportionally scaled down (*epsilon end*)
@@ -87,7 +87,7 @@ and mostly based on the estimated policies calculated by the current actor neura
 
 ## 4. Run Experiments and Select Best Agent
 
-[Training](https://github.com/miharothl/lab-drlnd-robot/blob/master/rlab-continous-control.ipynb)
+[Training](https://github.com/miharothl/DRLND-Continuous-Control/blob/master/rlab-continous-control.ipynb)
 is done using the epochs, consisting of training episodes where epsilon greedy agent is used,
 and validation episodes using only actions predicted by the trained agent.
  
