@@ -647,7 +647,7 @@ class Configuration:
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
-                            "epsilon_decay": 0.99995,
+                            "epsilon_decay": 0.9995,
                             "lr_actor": 1e-04,
                             "lr_critic": 3e-04,
                             "weight_decay":  0,
@@ -673,19 +673,18 @@ class Configuration:
                         "prioritized_replay_eps": 1e-06
                     },
                     "trainer_cfg": {
-                        "batch_size": 128,
+                        "batch_size": 256,
                         "eval_frequency": 10000,
                         "eval_steps": 2000,
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
-                        "max_steps": 300000,
+                        "max_steps": 3000000,
                         "tau": 0.001,
                         "update_every": 4,
                         "num_updates": 2
                     }
                 },
-
                 {
                     'id': 'crawler-linux',
                     'gym_id': 'env/unity/linux/crawler-novis/Crawler.x86_64',
