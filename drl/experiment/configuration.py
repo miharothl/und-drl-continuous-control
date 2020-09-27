@@ -712,13 +712,13 @@ class Configuration:
                             "actor_model_cfg": {
                                 "hidden_layers": [
                                     1024,
-                                    1024
+                                    512
                                 ]
                             },
                             "critic_model_cfg": {
                                 "hidden_layers": [
                                     1024,
-                                    1024
+                                    512
                                 ]
                             },
                         }
