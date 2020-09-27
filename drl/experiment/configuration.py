@@ -688,7 +688,7 @@ class Configuration:
 
                 {
                     'id': 'crawler-linux',
-                    'gym_id': 'env/unity/linux/crawler',
+                    'gym_id': 'env/unity/linux/crawler/Crawler.x86_64',
                     "agent_cfg": {
                         "action_size": 240,
                         "discrete": True,
