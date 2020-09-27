@@ -705,9 +705,9 @@ class Configuration:
                         "ddpg_cfg": {
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
-                            "epsilon_decay": 0.9995,
+                            "epsilon_decay": 0.9997,
                             "lr_actor": 1e-04,
-                            "lr_critic": 3e-04,
+                            "lr_critic": 1e-03,
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
@@ -724,7 +724,7 @@ class Configuration:
                         }
                     },
                     "replay_memory_cfg": {
-                        "buffer_size": 100000,
+                        "buffer_size": 10000,
                         "prioritized_replay": False,
                         "prioritized_replay_alpha": 0.6,
                         "prioritized_replay_beta0": 0.4,
@@ -739,8 +739,8 @@ class Configuration:
                         "max_episode_steps": 3000,
                         "max_steps": 3000000,
                         "tau": 0.001,
-                        "update_every": 4,
-                        "num_updates": 2
+                        "update_every": 40,
+                        "num_updates": 20
                     }
                 },
 
