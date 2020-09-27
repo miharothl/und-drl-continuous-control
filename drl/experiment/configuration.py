@@ -711,14 +711,14 @@ class Configuration:
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
-                                    1024,
-                                    512
+                                    1572,
+                                    1024
                                 ]
                             },
                             "critic_model_cfg": {
                                 "hidden_layers": [
-                                    1024,
-                                    512
+                                    1572,
+                                    1024
                                 ]
                             },
                         }
@@ -737,7 +737,7 @@ class Configuration:
                         "gamma": 0.99,
                         "human_flag": False,
                         "max_episode_steps": 1000,
-                        "max_steps": 300000,
+                        "max_steps": 3000000,
                         "tau": 0.001,
                         "update_every": 4,
                         "num_updates": 2
