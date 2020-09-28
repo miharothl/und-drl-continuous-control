@@ -678,7 +678,7 @@ class Configuration:
                         "eval_steps": 2000,
                         "gamma": 0.99,
                         "human_flag": False,
-                        "max_episode_steps": 1000,
+                        "max_episode_steps": 3000,
                         "max_steps": 3000000,
                         "tau": 0.001,
                         "update_every": 4,
@@ -706,8 +706,8 @@ class Configuration:
                             "epsilon_start": 1.0,
                             "epsilon_end": 0.1,
                             "epsilon_decay": 0.9997,
-                            "lr_actor": 1e-04,
-                            "lr_critic": 1e-03,
+                            "lr_actor": 1e-06,
+                            "lr_critic": 1e-06,
                             "weight_decay":  0,
                             "actor_model_cfg": {
                                 "hidden_layers": [
